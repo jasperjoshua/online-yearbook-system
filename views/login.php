@@ -18,16 +18,16 @@
                             <?php require_once 'views/ui_alert.php' ?>
                             <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;"></h3>
                             <div class="form-outline mb-4">
-                                <input name="username" type="text" id="form2Example18" class="form-control form-control-lg" />
                                 <label class="form-label" for="form2Example18">Username</label>
+                                <input name="username" type="text" id="form2Example18" class="form-control form-control-lg" />
                             </div>
                             <div class="form-outline mb-4">
-                                <input  name="password" type="password" id="form2Example28" class="form-control form-control-lg" />
                                 <label class="form-label" for="form2Example28">Password</label>
+                                <input  name="password" type="password" id="form2Example28" class="form-control form-control-lg" />
                             </div>
-                            <div class="pt-1 mb-4">
+                            <div class="pt-1 mb-4 log">
                                 <input type="hidden" name="login" value="submit" />
-                                <button class="btn btn-info btn-lg btn-block btn-dark" type="submit">Login</button>
+                                <button  type="submit">LOG IN</button>
                             </div>
                         </form>
                    
