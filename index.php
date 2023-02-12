@@ -70,6 +70,8 @@ if (isset($_GET['menu']) && $_GET['menu'] == 'login') {
             } else {
                 # Valid admin login
                 $_SESSION['ybook']['logged'] = 'admin';
+                # Reset Themes in SESSION 
+                $_SESSION['ybook']['themes'] = $theme->getThemeList();
             }
         } else {
             $_POST['danger'] = "Invalid Login.";

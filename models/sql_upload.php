@@ -4,6 +4,37 @@ require_once 'models/db_connect.php';
 
 class SQL_Upload extends DB_Connect {
 
+    public $title_list = array(
+        'ybook_cover' => 'Cover Page',
+        'content_bg_page' => 'Content Page',
+        'vision_mission' => 'Vision | Mission | Goals',
+        'officials' => 'BISU System Officials',
+        'board' => 'Board of Regents',
+        'faculty' => 'Teaching Staff',
+        'non_teaching' => 'Non-Teaching Staff',
+        'congrats' => 'Congratulations',
+        'graduates' => 'The Graduates',
+        'BSIT_cover' => 'BSIT Cover Page',
+        'BSIT_filler_page' => 'BSIT Filler Page',
+        'BSCS_cover' => 'BSCS Cover Page',
+        'BSCS_filler_page' => 'BSCS Filler Page',
+        'BS-ELEC_cover' => 'BS-ELEC Cover Page',
+        'BS-ELEC_filler_page' => 'BS-ELEC Filler Page',
+        'BS-ELEX_cover' => 'BS-ELEX Cover Page',
+        'BS-ELEX_filler_page' => 'BS-ELEX Filler Page',
+        'BSIT-FPSM_cover' => 'BSIT-FPSM Cover Page',
+        'BSIT-FPSM_filler_page' => 'BSIT-FPSM Filler Page',
+        'awardees' => 'Awardees & Achievers',
+        'song_bg_page' => 'Song Page',
+        'bisu_hymn' => 'BISU Hymn',
+        'grad_song' => 'Graduation Song',
+        'tribute_song' => 'Tribute Song',
+        'officers' => 'Batch Officers',
+        'ybook_back' => 'Back Page',
+        # online-only
+        'courses' => 'Courses',
+    );
+
     public function __construct() 
     {
         Parent::__construct();
@@ -18,61 +49,41 @@ class SQL_Upload extends DB_Connect {
             'board' => 'uploaded',
             'faculty' => 'uploaded',
             'congrats' => 'image',
-            'ybook_cover' => 'image',
-            'BSIT_cover' => 'image',
-            'BSIT_filler_page' => 'image',
-            'BSCS_cover' => 'image',
-            'BSCS_filler_page' => 'image',
-            'BS-ELEC_cover' => 'image',
-            'BS-ELEC_filler_page' => 'image',
-            'BS-ELEX_cover' => 'image',
-            'BS-ELEX_filler_page' => 'image',
-            'BSIT-FPSM_cover' => 'image',
-            'BSIT-FPSM_filler_page' => 'image',
             'graduates' => 'uploaded',
             'awardees' => 'uploaded',
+            'bisu_hymn' => 'static',
             'grad_song' => 'uploaded',
             'tribute_song' => 'uploaded',
-            'bisu_hymn' => 'static',
             'officers' => 'uploaded',
             'ybook_back' => 'image',
         );
+    }
 
+    public function getBackgroundImages()
+    {
+        $courses = $this->getCourseList();
+        $list = array();
+        $list['Common'] = array(
+            'content_bg_page' => 'Content Page',
+            'song_bg_page' => 'Song Page',
+        );
+        foreach ($courses as $course) {
+            $code = $course['Course_Code'];
+            $list[$code] = array(
+                $code.'_cover' => 'Cover Page',
+                $code.'_filler_page' => 'Filler Page',
+            );
+        }
+
+
+        return $list;
     }
 
     public function getDataTitle($type='')
     {
-        $list = array(
-            'ybook_cover' => 'Cover Page',
-            'vision_mission' => 'Vision | Mission | Goals',
-            'officials' => 'BISU System Officials',
-            'board' => 'Board of Regents',
-            'faculty' => 'Teaching Staff',
-            'non_teaching' => 'Non-Teaching Staff',
-            'congrats' => 'Congratulations',
-            'graduates' => 'The Graduates',
-            'BSIT_cover' => 'BSIT Cover Page',
-            'BSIT_filler_page' => 'BSIT Filler Page',
-            'BSCS_cover' => 'BSCS Cover Page',
-            'BSCS_filler_page' => 'BSCS Filler Page',
-            'BS-ELEC_cover' => 'BS-ELEC Cover Page',
-            'BS-ELEC_filler_page' => 'BS-ELEC Filler Page',
-            'BS-ELEX_cover' => 'BS-ELEX Cover Page',
-            'BS-ELEX_filler_page' => 'BS-ELEX Filler Page',
-            'BSIT-FPSM_cover' => 'BSIT-FPSM Cover Page',
-            'BSIT-FPSM_filler_page' => 'BSIT-FPSM Filler Page',
-            'awardees' => 'Awardees & Achievers',
-            'bisu_hymn' => 'BISU Hymn',
-            'grad_song' => 'Graduation Song',
-            'tribute_song' => 'Tribute Song',
-            'officers' => 'Batch Officers',
-            'ybook_back' => 'Back Page',
-            # online-only
-            'courses' => 'Courses',
-        );
         $title = '';
-        if (isset($list[$type])) {
-            $title = $list[$type];
+        if (isset($this->title_list[$type])) {
+            $title = $this->title_list[$type];
         }
 
         return $title;

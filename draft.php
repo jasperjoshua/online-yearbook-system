@@ -104,7 +104,7 @@
                     # Update yearbook theme
                     $updated = $sql->updateYearbookTheme($_GET['batch'], $new_theme);
                     if ($updated) {
-                        $_POST['success'] = 'The yearbook theme has been updated. You may need to re-upload the Cover Page and Thumbnail images to fit the new theme.';
+                        $_POST['success'] = 'The yearbook theme has been updated. You may need to re-upload some images to fit the new theme.';
                     } else {
                         $_POST['danger'] = 'Something went wrong.';
                     }
@@ -117,12 +117,20 @@
         }
     }
 
-    $_POST['data_list'] = $sql->getYearBookSections();
-    foreach ($_POST['data_list'] as $type => $uploaded) {
+    $_POST['sections'] = $sql->getYearBookSections();
+    foreach ($_POST['sections'] as $type => $uploaded) {
         $_POST[$type]['title'] = $sql->getDataTitle($type);
         if ($uploaded) {
             $_POST[$type]['headers'] = $sql->getDataHeaders($type);
             $_POST[$type]['data'] = $sql->getUploadedData($type, $yearbook_key);
+        }
+    }
+    $_POST['data_list'] = $_POST['sections'];
+    $_POST['bg_images'] = $sql->getBackgroundImages();
+    foreach ($_POST['bg_images'] as $img_type => $images) {
+        foreach ($images as $type => $title) {
+            $_POST['data_list'][$type] = 'image';
+            $_POST[$type]['title'] = $sql->getDataTitle($type);
         }
     }
     //print "<pre>"; print_r($_POST); exit;
@@ -143,7 +151,7 @@
     
     //print "<pre>"; print_r(($_POST['theme_sel'])); print_r($_POST['ybook']); exit;
     $_POST['css_cls'] = 'ybook-page';
-    $_POST['active'] = isset($_GET['type']) ? $_GET['type'] : 'ybook_cover';
+    $_POST['active'] = isset($_GET['type']) && $_GET['type'] != 'image' ? $_GET['type'] : 'ybook_cover';
     require_once 'views/ui_draft_theme.php';
     
 ?>

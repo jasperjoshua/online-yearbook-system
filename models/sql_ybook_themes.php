@@ -68,6 +68,7 @@ class SQL_Ybook_Themes extends DB_Connect {
                 $_POST['theme_sel']['images'][$img_type] = $ybook_img_file;
             }
         }
+        //print "<pre>"; print_r($_POST['ybook']['images']); exit;
     }
 
 }

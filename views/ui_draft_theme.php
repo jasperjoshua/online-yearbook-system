@@ -33,7 +33,7 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="col-md-3 text-center">
+                        <div class="col-md-3 text-left">
                             <input type="hidden" name="orig_theme" value="<?php echo $_POST['ybook']['theme'] ?>" />
                             <button class="btn btn-primary py-4 px-5" type="submit">Apply Theme</button>
                         </div>
@@ -93,7 +93,7 @@
             <hr class="hr-blurry" />
             <div class="container">
                 <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
-                    <?php foreach ($_POST['data_list'] as $type => $page_type): ?>
+                    <?php foreach ($_POST['sections'] as $type => $page_type): ?>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link 
                             <?php if ($_POST['active'] == $type): ?>
@@ -105,6 +105,31 @@
                         </button>
                     </li>
                     <?php endforeach; ?>
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link 
+                            <?php if ($_POST['active'] == 'image'): ?>
+                                active
+                            <?php endif; ?>
+                            dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Background Images</a>
+                        <div class="dropdown-menu">
+                            <?php foreach ($_POST['bg_images'] as $img_type => $images): ?>
+                                <?php foreach ($images as $type => $img_title): ?>
+                                    <button class="nav-link 
+                                     
+                                        <?php if (isset($_POST['image_type']) && $_POST['image_type'] == $type): ?>
+                                            active
+                                        <?php endif; ?>
+                                        " data-bs-toggle="tab" type="button" role="tab" aria-selected="false" 
+                                        id="<?php echo $type ?>" data-bs-target="#<?php echo $type ?>-pane" aria-controls="<?php echo $type ?>-pane" >
+                                        <?php echo $img_type.' '.$img_title ?>                                            
+                                    </button>
+                                <?php endforeach; ?>
+                                <?php if ($img_type == 'Common'): ?>
+                                    <div class="dropdown-divider"></div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <hr class="hr-blurry" />
@@ -125,6 +150,8 @@
                                     $_POST['data'] = $_POST[$type]['data'];
                                 }
                             ?>
+                            
+                            <p class="h4 text-primary ff-secondary fw-normal text-center mb-2"><?php echo $_POST[$type]['title'] ?></p> 
                             <?php if ($page_type == 'uploaded'): ?>
                                 <div class="row g-2">
                                     <form method="POST" enctype="multipart/form-data" 
@@ -170,11 +197,10 @@
                                 </div>
 
                             <?php elseif ($page_type == 'image'): ?>
-                                <p class="h4 text-primary ff-secondary fw-normal text-center mb-0"><?php echo $_POST[$type]['title'] ?></p> 
                                 <form action="draft.php?m=upload&type=image&batch=<?php echo $_GET['batch'] ?>" method="POST" enctype="multipart/form-data" class="p-3">
                                     <div class="row m-1">
                                         <div class="col-sm-5">
-                                            <img class="img-fluid ybook-page" src="<?php echo $_POST['theme_sel']['images'][$_GET['type']]?>" width="100%" alt="">
+                                            <img class="img-fluid ybook-page" src="<?php echo $_POST['theme_sel']['images'][$type]?>" width="100%" alt="">
                                         </div>
                                         <div class="col-sm-7">
                                             <input type="file" name="uploaded_file" accept="image/*" class="form-control form-control-lg" id="uploaded_file" />
@@ -184,7 +210,8 @@
                                                     <em>This image will be used in the print-version of the yearbook.</em>
                                                 </small>
                                             </p>
-                                            <input type="hidden" name="orig_fname" value="<?php echo basename($_POST['ybook']['images']['ybook_cover']) ?>" />
+                                            <input type="hidden" name="orig_fname" value="<?php echo basename($_POST['ybook']['images'][$type]) ?>" />
+                                            <input type="hidden" name="image_type" value="<?php $type ?>" />
                                             <input type="hidden" name="save" value="upload" />
                                             <button class="btn btn-primary mt-2 p-3" type="submit">Upload Image</button>
                                         </div>

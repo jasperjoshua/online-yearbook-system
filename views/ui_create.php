@@ -18,7 +18,7 @@
                     <div class="col-12">
                         <div class="form-floating">
                             <select class="form-control selectpicker"  id="theme" name="Theme">
-                                <?php foreach ($_SESSION['themes'] as $theme => $theme_data) : ?>
+                                <?php foreach ($_SESSION['ybook']['themes'] as $theme => $theme_data) : ?>
                                     <option value="<?php echo $theme ?>"><?php echo $theme_data['name'] ?></option>
                                 <?php endforeach; ?>
                             </select>
