@@ -1,3 +1,6 @@
+<?php  
+    //print "<pre>"; print_r($_POST['ybook_list']); exit;
+?>
     <?php if (!empty($_POST['ybook_list'])): ?>
 
         <!-- Yearbook List Start -->
@@ -13,7 +16,7 @@
                         <div class="col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
                             <a href="ybook.php?batch=<?php echo $batch ?>" target="_blank">
                                 <div class="service-item rounded pt-3">
-                                    <img class="img-fluid " src="<?php echo $ybook_data['images']['ybook_tile'] ?>" width="100%" alt="">
+                                    <img class="img-fluid " src="<?php echo $ybook_data['images']['ybook_cover'] ?>" width="100%" alt="">
                                     <div class="p-4 text-success pt-20">
                                         <!--
                                         <i class="fa fa-3x fa-user-graduate text-white mb-4"></i>
@@ -31,5 +34,5 @@
             </div>
         </div>
         <!-- Yearbook List End -->
-        
+
     <?php endif; ?>

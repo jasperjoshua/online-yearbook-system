@@ -10,6 +10,7 @@
 
     require_once 'config.php';
     require_once 'helper.php';
+    require_once 'init.php';
 
     //print "<pre>"; print_r($_POST); print_r($_SESSION['ybook']); exit;
     if (!isset($_GET['batch'])) {
@@ -37,8 +38,6 @@
 
     $yearbook_key = $sql->getYearbookKey($_GET['batch']);
     $_SESSION['ybook']['batch_sel'] = $_GET['batch'];
-    $_POST['draft_ybooks'] = $sql->getDraftYearbooks();
-    //print "<pre>"; print_r($_POST['draft_ybooks']);
     //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;
     
     if (isset($_GET['m'])) {
@@ -118,21 +117,7 @@
         }
     }
 
-    $_POST['data_list'] = array(
-        'ybook_cover' => 'image',
-        'vision_mission' => 'static',
-        'officials' => 'uploaded',
-        'board' => 'uploaded',
-        'faculty' => 'uploaded',
-        'non_teaching' => 'uploaded',
-        'graduates' => 'uploaded',
-        'awardees' => 'uploaded',
-        'officers' => 'uploaded',
-        'bisu_hymn' => 'static',
-        'grad_song' => 'uploaded',
-        'tribute_song' => 'uploaded',
-        'ybook_back' => 'image',
-    );
+    $_POST['data_list'] = $sql->getYearBookSections();
     foreach ($_POST['data_list'] as $type => $uploaded) {
         $_POST[$type]['title'] = $sql->getDataTitle($type);
         if ($uploaded) {
@@ -153,25 +138,12 @@
         'images' => $_POST['theme_sel']['images'],
     );
 
-    # Use ybook_cover from yearbook img dir if available
-    $img_fname = basename($_POST['ybook']['images']['ybook_cover']);
-    $ybook_img_file = $ybook_dir.'/'.$img_fname;
-    if (is_file($ybook_img_file)) {
-        $_POST['ybook']['images']['ybook_cover'] = $ybook_img_file;
-        $_POST['theme_sel']['images']['ybook_cover'] = $ybook_img_file;
-    }
-
-    # Use ybook_tile from yearbook img dir if available
-    $img_fname = basename($_POST['ybook']['images']['ybook_tile']);
-    $ybook_img_file = $ybook_dir.'/'.$img_fname;
-    if (is_file($ybook_img_file)) {
-        $_POST['ybook']['images']['ybook_tile'] = $ybook_img_file;
-        $_POST['theme_sel']['images']['ybook_tile'] = $ybook_img_file;
-    }
+    # Use images from yearbook img dir (uploaded) if available, instead of default theme images
+    $theme->setYearbookImages($ybook_dir);
     
     //print "<pre>"; print_r(($_POST['theme_sel'])); print_r($_POST['ybook']); exit;
     $_POST['css_cls'] = 'ybook-page';
-    $_POST['active'] = 'ybook_cover';
+    $_POST['active'] = isset($_GET['type']) ? $_GET['type'] : 'ybook_cover';
     require_once 'views/ui_draft_theme.php';
     
 ?>

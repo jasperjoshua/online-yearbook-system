@@ -11,6 +11,7 @@ if (!isset($_SESSION['ybook']['logged']) || $_SESSION['ybook']['logged'] == 'gue
 $_POST['ybook_lists'] = array();
 require_once 'config.php';
 require_once 'helper.php';
+require_once 'init.php';
 
 if (!isset($_GET['m'])) {
     $_GET['m'] = 'home';
@@ -20,14 +21,6 @@ include_once 'models/sql_upload.php';
 $sql = new SQL_Upload; 
 include_once 'models/sql_ybook_themes.php';
 $theme = new SQL_Ybook_Themes; 
-
-$_POST['draft_ybooks'] = $sql->getDraftYearbooks();
-
-# Get themes if not yet available in session
-if (!isset($_SESSION['ybook']['themes']) || empty($_SESSION['ybook']['themes'])) {
-    $_SESSION['ybook']['themes'] = $theme->getThemeList();
-}
-//print "<pre>"; print_r($_SESSION['ybook']['themes']); exit;
 
 if ($_GET['m'] == 'upload') {
 

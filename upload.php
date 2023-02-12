@@ -3,26 +3,19 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!isset(_SESSION['ybook']['logged']) || _SESSION['ybook']['logged'] == 'guest') {
+if (!isset($_SESSION['ybook']['logged']) || $_SESSION['ybook']['logged'] == 'guest') {
     header('Location: ./index.php');
     die();
 }
 
 require_once 'config.php';
 require_once 'helper.php';
+require_once 'init.php';
 
 include_once 'models/sql_upload.php';
 $sql = new SQL_Upload; 
 include_once 'models/sql_ybook_themes.php';
 $theme = new SQL_Ybook_Themes; 
-
-$_POST['draft_ybooks'] = $sql->getDraftYearbooks();
-
-# Get themes if not yet available in session
-if (!isset(_SESSION['ybook']['themes']) || empty(_SESSION['ybook']['themes'])) {
-    _SESSION['ybook']['themes'] = $theme->getThemeList();
-}
-//print "<pre>"; print_r(_SESSION['ybook']['themes']); exit;
 
 if (isset($_POST['save']) && $_POST['save'] == 'upload') {
     //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;

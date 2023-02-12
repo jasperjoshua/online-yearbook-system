@@ -39,6 +39,7 @@
                         </div>
                 </div>
             </form>
+            <!-- 
             <div class="row g-3 m-2 mt-0">
                 <div class="col-sm-6">
                     <p class="h5 text-primary mb-0">Cover Page</p> 
@@ -85,6 +86,7 @@
                     </form>
                 </div>
             </div>
+            -->
             </div>
         </div>
         <div class="container py-5">
@@ -130,7 +132,7 @@
                                         
                                         <?php if ($_GET['type'] == 'grad_song' || $_GET['type'] == 'tribute_song'): ?>
                                             <div class="row g-3">
-                                                <p class="text-primary text-uppercase mb-2">Select TXT file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
+                                                <p class="text-secondary text-uppercase mb-2">Select TXT file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
                                                 <div class="col-md-9">
                                                     <input type="file" name="uploaded_file" accept="text/txt" class="form-control form-control-lg" id="uploaded_file" />
                                                 </div>
@@ -147,7 +149,7 @@
                                             </div>
                                         <?php else: ?>
                                             <div class="row g-3">
-                                                <p class="text-primary text-uppercase mb-2">Select TSV (Tab Separated Values) file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
+                                                <p class="text-secondary text-uppercase mb-2">Select TSV (Tab Separated Values) file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
                                                 <div class="col-md-9">
                                                     <input type="file" name="uploaded_file" accept="text/tsv" class="form-control form-control-lg" id="uploaded_file" />
                                                 </div>
@@ -168,9 +170,26 @@
                                 </div>
 
                             <?php elseif ($page_type == 'image'): ?>
-                                <center>
-                                        <img class="img-fluid ybook-page" src="<?php echo $_POST['theme_sel']['images'][$_GET['type']]?>" width="100%" alt="">
-                                </center>
+                                <p class="h4 text-primary ff-secondary fw-normal text-center mb-0"><?php echo $_POST[$type]['title'] ?></p> 
+                                <form action="draft.php?m=upload&type=image&batch=<?php echo $_GET['batch'] ?>" method="POST" enctype="multipart/form-data" class="p-3">
+                                    <div class="row m-1">
+                                        <div class="col-sm-5">
+                                            <img class="img-fluid ybook-page" src="<?php echo $_POST['theme_sel']['images'][$_GET['type']]?>" width="100%" alt="">
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <input type="file" name="uploaded_file" accept="image/*" class="form-control form-control-lg" id="uploaded_file" />
+                                            <p class="text-muted mt-0">
+                                                <small>
+                                                    <strong>Note:</strong> 
+                                                    <em>This image will be used in the print-version of the yearbook.</em>
+                                                </small>
+                                            </p>
+                                            <input type="hidden" name="orig_fname" value="<?php echo basename($_POST['ybook']['images']['ybook_cover']) ?>" />
+                                            <input type="hidden" name="save" value="upload" />
+                                            <button class="btn btn-primary mt-2 p-3" type="submit">Upload Image</button>
+                                        </div>
+                                    </div>
+                                </form>
                             <?php endif; ?>
 
                             <div style="padding-top:30px">

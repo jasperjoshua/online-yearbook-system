@@ -57,6 +57,19 @@ class SQL_Ybook_Themes extends DB_Connect {
         }
     }
 
+    public function setYearbookImages($ybook_dir)
+    {
+        foreach ($_POST['ybook']['images'] as $img_type =>  $img_fpath) {
+            # Use image from yearbook img dir if available
+            $img_fname = basename($img_fpath);
+            $ybook_img_file = $ybook_dir.'/'.$img_fname;
+            if (is_file($ybook_img_file)) {
+                $_POST['ybook']['images'][$img_type] = $ybook_img_file;
+                $_POST['theme_sel']['images'][$img_type] = $ybook_img_file;
+            }
+        }
+    }
+
 }
 
 ?>
