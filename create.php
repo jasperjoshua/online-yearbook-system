@@ -3,7 +3,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!isset($_SESSION['logged']) || $_SESSION['logged'] == 'guest') {
+if (!isset($_SESSION['ybook']['logged']) || $_SESSION['ybook']['logged'] == 'guest') {
     header('Location: ./index.php');
     die();
 }
@@ -24,10 +24,10 @@ $theme = new SQL_Ybook_Themes;
 $_POST['draft_ybooks'] = $sql->getDraftYearbooks();
 
 # Get themes if not yet available in session
-if (!isset($_SESSION['themes']) || empty($_SESSION['themes'])) {
-    $_SESSION['themes'] = $theme->getThemeList();
+if (!isset($_SESSION['ybook']['themes']) || empty($_SESSION['ybook']['themes'])) {
+    $_SESSION['ybook']['themes'] = $theme->getThemeList();
 }
-//print "<pre>"; print_r($_SESSION['themes']); exit;
+//print "<pre>"; print_r($_SESSION['ybook']['themes']); exit;
 
 if ($_GET['m'] == 'upload') {
 
@@ -37,7 +37,7 @@ if ($_GET['m'] == 'upload') {
         if (isset($_FILES['uploaded_file']) && !empty($_FILES['uploaded_file']['tmp_name'])) {
             $file = $_FILES['uploaded_file']['tmp_name'];
             if (is_file($file)) {
-                $yearbook_key = $sql->getYearbookKey($_SESSION['batch_sel']);
+                $yearbook_key = $sql->getYearbookKey($_SESSION['ybook']['batch_sel']);
                 if ($_GET['type'] == 'grad_song' || $_GET['type'] == 'tribute_song') {
                     $lines = getTXTFileData($file, true);
                     //print "<pre>"; print_r($lines); exit;
@@ -71,7 +71,7 @@ if ($_GET['m'] == 'upload') {
         print_r($_POST['data']);
         require_once 'views/ui_upload.php';
     } else {
-        header('Location: ./draft.php?batch='.$_SESSION['batch_sel']);
+        header('Location: ./draft.php?batch='.$_SESSION['ybook']['batch_sel']);
         die();
     }
 
@@ -86,7 +86,7 @@ if ($_GET['m'] == 'upload') {
     } elseif (isset($ybook_list[$_POST['Batch']])) {
         $_POST['danger'] = "A yearbook for Batch {$_POST['Batch']} already exists.";
     } else {
-        $sel_theme = $_SESSION['themes'][$_POST['Theme']];
+        $sel_theme = _SESSION['ybook']['themes'][$_POST['Theme']];
         $theme->createYearbookDir($_POST['Batch'], $sel_theme);
         $yearbook = array(
             'Batch' => $_POST['Batch'],

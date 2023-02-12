@@ -8,7 +8,7 @@
                 </div>
                 <div class="row g-2">
                     
-                    <?php foreach ($_SESSION['themes'] as $theme => $theme_data): ?>
+                    <?php foreach ($_SESSION['ybook']['themes'] as $theme => $theme_data): ?>
                         
                         <div class="col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="service-item rounded pt-3">

@@ -12,6 +12,13 @@ class SQL_Upload extends DB_Connect {
     public function getDataTitle($type='')
     {
         $list = array(
+            # image
+            'ybook_cover' => 'Cover Page',
+            'ybook_back' => 'Back Page',
+            # static
+            'vision_mission' => 'Vision, Mission, Goals',
+            'bisu_hymn' => 'BISU Hymn',
+            # uploaded
             'courses' => 'Courses',
             'officials' => 'BISU System Officials',
             'board' => 'Board of Regents',

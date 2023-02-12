@@ -3,7 +3,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!isset($_SESSION['logged']) || $_SESSION['logged'] == 'guest') {
+if (!isset(_SESSION['ybook']['logged']) || _SESSION['ybook']['logged'] == 'guest') {
     header('Location: ./index.php');
     die();
 }
@@ -19,10 +19,10 @@ $theme = new SQL_Ybook_Themes;
 $_POST['draft_ybooks'] = $sql->getDraftYearbooks();
 
 # Get themes if not yet available in session
-if (!isset($_SESSION['themes']) || empty($_SESSION['themes'])) {
-    $_SESSION['themes'] = $theme->getThemeList();
+if (!isset(_SESSION['ybook']['themes']) || empty(_SESSION['ybook']['themes'])) {
+    _SESSION['ybook']['themes'] = $theme->getThemeList();
 }
-//print "<pre>"; print_r($_SESSION['themes']); exit;
+//print "<pre>"; print_r(_SESSION['ybook']['themes']); exit;
 
 if (isset($_POST['save']) && $_POST['save'] == 'upload') {
     //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;

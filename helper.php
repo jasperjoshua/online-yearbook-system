@@ -3,9 +3,9 @@
 
 function logout()
 {
-    unset($_SESSION['themes']);
-    unset($_SESSION['logged']);
-    $_SESSION['logged'] = 'guest';
+    unset($_SESSION['ybook']['themes']);
+    unset($_SESSION['ybook']['logged']);
+    $_SESSION['ybook']['logged'] = 'guest';
     header('Location: index.php');
     exit;
 

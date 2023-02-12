@@ -3,7 +3,7 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    if (!isset($_SESSION['logged']) || $_SESSION['logged'] == 'guest') {
+    if (!isset($_SESSION['ybook']['logged']) || $_SESSION['ybook']['logged'] == 'guest') {
         header('Location: ./index.php');
         die();
     }
@@ -11,13 +11,13 @@
     require_once 'config.php';
     require_once 'helper.php';
 
-    //print "<pre>"; print_r($_POST); print_r($_SESSION); exit;
+    //print "<pre>"; print_r($_POST); print_r($_SESSION['ybook']); exit;
     if (!isset($_GET['batch'])) {
         # Redirect to create page when no batch entered
         header('Location: ./create.php');
         die();
     }
-    //print "<pre>"; print_r($_POST); print_r($_SESSION); exit;
+    //print "<pre>"; print_r($_POST); print_r($_SESSION['ybook']); exit;
 
     include_once 'models/sql_upload.php';
     $sql = new SQL_Upload; 
@@ -36,7 +36,7 @@
     }
 
     $yearbook_key = $sql->getYearbookKey($_GET['batch']);
-    $_SESSION['batch_sel'] = $_GET['batch'];
+    $_SESSION['ybook']['batch_sel'] = $_GET['batch'];
     $_POST['draft_ybooks'] = $sql->getDraftYearbooks();
     //print "<pre>"; print_r($_POST['draft_ybooks']);
     //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;
@@ -49,7 +49,7 @@
                 if (isset($_FILES['uploaded_file']) && !empty($_FILES['uploaded_file']['tmp_name'])) {
                     $file = $_FILES['uploaded_file']['tmp_name'];
                     if (is_file($file)) {
-                        $yearbook_key = $sql->getYearbookKey($_SESSION['batch_sel']);
+                        $yearbook_key = $sql->getYearbookKey($_SESSION['ybook']['batch_sel']);
                         if ($_GET['type'] == 'grad_song' || $_GET['type'] == 'tribute_song') {
                             $lines = getTXTFileData($file, true);
                             //print "<pre>"; print_r($lines); exit;
@@ -63,7 +63,7 @@
                             //print "<pre>"; print_r($row); exit;
                             $created = $sql->addTableData($_GET['type'], array($row));
                         } elseif ($_GET['type'] == 'image') {
-                            //print "<pre>"; print_r($_POST); print_r($_SESSION); exit;
+                            //print "<pre>"; print_r($_POST); print_r($_SESSION['ybook']); exit;
                             $orig_fname = $_POST['orig_fname'];
                             $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
                             $uploaded_img = $ybook_dir.'/'.$orig_fname;
@@ -84,7 +84,7 @@
                 }
             } 
         } elseif ($_GET['m'] == 'publish') {
-            //print "<pre>"; print_r($_POST); print_r($_SESSION); exit;
+            //print "<pre>"; print_r($_POST); print_r($_SESSION['ybook']); exit;
             # Update yearbook theme
             $updated = $sql->publishYearbook($_GET['batch']);
             if ($updated) {
@@ -96,12 +96,12 @@
                 $_POST['danger'] = 'Something went wrong.';
             }
         } elseif ($_GET['m'] == 'apply_theme') {
-            //print "<pre>"; print_r($_POST); print_r($_SESSION); exit;
+            //print "<pre>"; print_r($_POST); print_r($_SESSION['ybook']); exit;
             if (isset($_POST['theme']) && $_POST['theme'] != '') {
                 $new_theme = $_POST['theme'];
                 if ($_POST['orig_theme'] == $new_theme) {
                     $_POST['warning'] = 'No changes. Please select another theme.';
-                } elseif (isset($_SESSION['themes'][$new_theme])) {
+                } elseif (isset($_SESSION['ybook']['themes'][$new_theme])) {
                     # Update yearbook theme
                     $updated = $sql->updateYearbookTheme($_GET['batch'], $new_theme);
                     if ($updated) {
@@ -126,7 +126,7 @@
         'faculty' => 'uploaded',
         'non_teaching' => 'uploaded',
         'graduates' => 'uploaded',
-        //'awardees' => 'uploaded',
+        'awardees' => 'uploaded',
         'officers' => 'uploaded',
         'bisu_hymn' => 'static',
         'grad_song' => 'uploaded',
@@ -134,17 +134,18 @@
         'ybook_back' => 'image',
     );
     foreach ($_POST['data_list'] as $type => $uploaded) {
+        $_POST[$type]['title'] = $sql->getDataTitle($type);
         if ($uploaded) {
-            $_POST[$type]['title'] = $sql->getDataTitle($type);
             $_POST[$type]['headers'] = $sql->getDataHeaders($type);
             $_POST[$type]['data'] = $sql->getUploadedData($type, $yearbook_key);
         }
     }
+    //print "<pre>"; print_r($_POST); exit;
 
-    //print "<pre>"; print_r($_SESSION); exit;
+    //print "<pre>"; print_r($_SESSION['ybook']); exit;
     $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
     $ybook_theme = $sql->getYearbookTheme($_GET['batch']);
-    $_POST['theme_sel'] = $_SESSION['themes'][$ybook_theme];
+    $_POST['theme_sel'] = $_SESSION['ybook']['themes'][$ybook_theme];
     $_POST['ybook'] = array(
         'batch' => $_GET['batch'],
         'theme' => $ybook_theme,
@@ -170,6 +171,7 @@
     
     //print "<pre>"; print_r(($_POST['theme_sel'])); print_r($_POST['ybook']); exit;
     $_POST['css_cls'] = 'ybook-page';
+    $_POST['active'] = 'ybook_cover';
     require_once 'views/ui_draft_theme.php';
     
 ?>

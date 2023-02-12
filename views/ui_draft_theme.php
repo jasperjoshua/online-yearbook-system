@@ -7,7 +7,7 @@
     <div class="form-floating">
         <div class="text-center wow fadeInUp mt-5 pt-5" data-wow-delay="0.1s">
             <h5 class="section-title ff-secondary text-center text-primary fw-normal">Create a Yearbook</h5>
-            <h1 class="mb-5">Draft Yearbook for BATCH <?php echo $_SESSION['batch_sel'] ?>
+            <h1 class="mb-5">Draft Yearbook for BATCH <?php echo $_SESSION['ybook']['batch_sel'] ?>
                 <form action="draft.php?m=publish&batch=<?php echo $_GET['batch'] ?>" method="POST" enctype="multipart/form-data" class="p-3">
                     <button class="btn btn-primary py-4 px-5" type="submit" name="publish" value="publish">Publish Yearbook</button>
                 </form>
@@ -22,7 +22,7 @@
                         <div class="col-md-9">
                             <p class="h4 text-primary text-uppercase mb-2">YEARBOOK THEME</p>
                             <select class="form-control selectpicker"  id="theme" name="theme">
-                                <?php foreach ($_SESSION['themes'] as $theme => $theme_data) : ?>
+                                <?php foreach ($_SESSION['ybook']['themes'] as $theme => $theme_data) : ?>
                                     <option value="<?php echo $theme ?>"
                                         <?php if ($theme == $_POST['ybook']['theme']): ?>
                                             selected="selected"
@@ -87,81 +87,105 @@
             </div>
             </div>
         </div>
-
         <div class="container py-5">
+            <hr class="hr-blurry" />
             <div class="container">
-            <?php foreach ($_POST['data_list'] as $type => $page_type): ?>
-                <div class="row g-3 mt-5">
-                    <?php
-                        $_GET['type'] = $type;
-                        $_POST['title'] = $_POST[$type]['title'];
-                        if ($page_type == 'uploaded') {
-                            $_POST['headers'] = $_POST[$type]['headers'];
-                            $_POST['data'] = $_POST[$type]['data'];
-                        }
-                    ?>
-                    <?php if ($page_type == 'uploaded'): ?>
-                        <div class="row g-2">
-                            <form method="POST" enctype="multipart/form-data" 
-                                action="draft.php?m=upload&type=<?php echo $_GET['type'] ?>&batch=<?php echo $_GET['batch'] ?>" >
-                                
-                                <?php if ($_GET['type'] == 'grad_song' || $_GET['type'] == 'tribute_song'): ?>
-                                    <div class="row g-3">
-                                        <p class="text-primary text-uppercase mb-2">Select TXT file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
-                                        <div class="col-md-9">
-                                            <input type="file" name="uploaded_file" accept="text/txt" class="form-control form-control-lg" id="uploaded_file" />
-                                        </div>
-                                        <div class="col-md-3 text-center">
-                                            <input type="hidden" name="save" value="upload" />
-                                            <button class="btn btn-primary py-3 px-5" type="submit">Upload</button>
-                                        </div>
-                                        <p class="text-muted mt-0">
-                                            <small>
-                                                <strong>Note:</strong> 
-                                                The TXT file should contain the lyrics of the song with the <em>title</em> and <em>singer</em> as the first two lines. 
-                                            </small>
-                                        </p>
-                                    </div>
-                                <?php else: ?>
-                                    <div class="row g-3">
-                                        <p class="text-primary text-uppercase mb-2">Select TSV (Tab Separated Values) file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
-                                        <div class="col-md-9">
-                                            <input type="file" name="uploaded_file" accept="text/tsv" class="form-control form-control-lg" id="uploaded_file" />
-                                        </div>
-                                        <div class="col-md-3 text-center">
-                                            <input type="hidden" name="save" value="upload" />
-                                            <button class="btn btn-primary py-3 px-5" type="submit">Upload</button>
-                                        </div>
-                                        <p class="text-muted mt-0">
-                                            <small>
-                                                <strong>Note:</strong> 
-                                                    The TSV file should contain the following column headers - 
-                                                    <em><?php echo implode(', ', $_POST['headers']) ?></em>
-                                            </small>
-                                        </p>
-                                    </div>
-                                <?php endif; ?>
-                            </form>
-                        </div>
-
-                    <?php elseif ($page_type == 'image'): ?>
-                        <center>
-                                <img class="img-fluid ybook-page" src="<?php echo $_POST['theme_sel']['images'][$_GET['type']]?>" width="100%" alt="">
-                        </center>
-                    <?php endif; ?>
-
-                    <div style="padding-top:30px">
-                        <?php
-                            $ui_file = 'views/ui_'.$_GET['type'].'.php';
-                            if (is_file($ui_file)) {
-                                require_once $ui_file;
-                            }
-                        ?>
-                    </div>
-                </div>
-                <hr class="hr-blurry" />
-            <?php endforeach; ?>
+                <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+                    <?php foreach ($_POST['data_list'] as $type => $page_type): ?>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link 
+                            <?php if ($_POST['active'] == $type): ?>
+                                active
+                            <?php endif; ?>
+                            " data-bs-toggle="tab" type="button" role="tab" aria-selected="false" 
+                            id="<?php echo $type ?>" data-bs-target="#<?php echo $type ?>-pane" aria-controls="<?php echo $type ?>-pane" >
+                            <?php echo $_POST[$type]['title'] ?>                                               
+                        </button>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
+            <hr class="hr-blurry" />
+            <div class="container mt-5">
+                <div class="tab-content" id="myTabContent">              
+                    <?php foreach ($_POST['data_list'] as $type => $page_type): ?>
+                        <div class="tab-pane fade
+                            <?php if ($_POST['active'] == $type): ?>
+                                show active
+                            <?php endif; ?>
+                            " id="<?php echo $type ?>-pane" role="tabpanel" aria-labelledby="<?php echo $type ?>" tabindex="0"
+                        >  
+                            <?php
+                                $_GET['type'] = $type;
+                                $_POST['title'] = $_POST[$type]['title'];
+                                if ($page_type == 'uploaded') {
+                                    $_POST['headers'] = $_POST[$type]['headers'];
+                                    $_POST['data'] = $_POST[$type]['data'];
+                                }
+                            ?>
+                            <?php if ($page_type == 'uploaded'): ?>
+                                <div class="row g-2">
+                                    <form method="POST" enctype="multipart/form-data" 
+                                        action="draft.php?m=upload&type=<?php echo $_GET['type'] ?>&batch=<?php echo $_GET['batch'] ?>" >
+                                        
+                                        <?php if ($_GET['type'] == 'grad_song' || $_GET['type'] == 'tribute_song'): ?>
+                                            <div class="row g-3">
+                                                <p class="text-primary text-uppercase mb-2">Select TXT file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
+                                                <div class="col-md-9">
+                                                    <input type="file" name="uploaded_file" accept="text/txt" class="form-control form-control-lg" id="uploaded_file" />
+                                                </div>
+                                                <div class="col-md-3 text-center">
+                                                    <input type="hidden" name="save" value="upload" />
+                                                    <button class="btn btn-primary py-3 px-5" type="submit">Upload</button>
+                                                </div>
+                                                <p class="text-muted mt-0">
+                                                    <small>
+                                                        <strong>Note:</strong> 
+                                                        The TXT file should contain the lyrics of the song with the <em>title</em> and <em>singer</em> as the first two lines. 
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="row g-3">
+                                                <p class="text-primary text-uppercase mb-2">Select TSV (Tab Separated Values) file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
+                                                <div class="col-md-9">
+                                                    <input type="file" name="uploaded_file" accept="text/tsv" class="form-control form-control-lg" id="uploaded_file" />
+                                                </div>
+                                                <div class="col-md-3 text-center">
+                                                    <input type="hidden" name="save" value="upload" />
+                                                    <button class="btn btn-primary py-3 px-5" type="submit">Upload</button>
+                                                </div>
+                                                <p class="text-muted mt-0">
+                                                    <small>
+                                                        <strong>Note:</strong> 
+                                                            The TSV file should contain the following column headers - 
+                                                            <em><?php echo implode(', ', $_POST['headers']) ?></em>
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        <?php endif; ?>
+                                    </form>
+                                </div>
+
+                            <?php elseif ($page_type == 'image'): ?>
+                                <center>
+                                        <img class="img-fluid ybook-page" src="<?php echo $_POST['theme_sel']['images'][$_GET['type']]?>" width="100%" alt="">
+                                </center>
+                            <?php endif; ?>
+
+                            <div style="padding-top:30px">
+                                <?php
+                                    $ui_file = 'views/ui_'.$_GET['type'].'.php';
+                                    if (is_file($ui_file)) {
+                                        require_once $ui_file;
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <hr class="hr-blurry" />
         </div>
     </div>
 </div>

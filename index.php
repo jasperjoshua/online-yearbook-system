@@ -3,8 +3,11 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!isset($_SESSION['logged'])) {
-    $_SESSION['logged'] = 'guest';
+
+//print "<pre>"; print_r($_SESSION); exit;
+
+if (!isset($_SESSION['ybook']['logged'])) {
+    $_SESSION['ybook']['logged'] = 'guest';
 }
 
 require_once 'config.php';
@@ -22,17 +25,17 @@ $theme = new SQL_Ybook_Themes;
 
 $_POST['published_ybooks'] = $sql->getPublishedYearbooks();
 # Get themes if not yet available in session
-if (!isset($_SESSION['themes']) || empty($_SESSION['themes'])) {
-    $_SESSION['themes'] = $theme->getThemeList();
+if (!isset($_SESSION['ybook']['themes']) || empty($_SESSION['ybook']['themes'])) {
+    $_SESSION['ybook']['themes'] = $theme->getThemeList();
 }
-//print "<pre>"; print_r($_POST); print_r($_SESSION['themes']); exit;
+//print "<pre>"; print_r($_POST); print_r($_SESSION['ybook']['themes']); exit;
 
 $_POST['ybook_list'] = array();
 foreach ($_POST['published_ybooks'] as $batch => $ybook) {
     $_POST['ybook_list'][$batch] = $ybook;
     $ybook_dir = YBOOK_IMG_DIR.'/'.$batch;
     $ybook_theme = $ybook['Theme'];
-    $theme_images = $_SESSION['themes'][$ybook_theme]['images'];
+    $theme_images = $_SESSION['ybook']['themes'][$ybook_theme]['images'];
     $_POST['ybook_list'][$batch]['dir'] = $ybook_dir;
     $_POST['ybook_list'][$batch]['images'] = $theme_images;
     # Use ybook_cover from yearbook img dir if available
@@ -66,7 +69,7 @@ if (isset($_GET['menu']) && $_GET['menu'] == 'login') {
                 $_POST['danger'] = "Incorrect Password.";
             } else {
                 # Valid admin login
-                $_SESSION['logged'] = 'admin';
+                $_SESSION['ybook']['logged'] = 'admin';
             }
         } else {
             $_POST['danger'] = "Invalid Login.";
@@ -90,7 +93,7 @@ if (isset($_GET['menu']) && $_GET['menu'] == 'about') {
 # Yearbook online view
 } elseif (isset($_GET['menu']) && $_GET['menu'] == 'ybook') {
     $_POST['batch'] = $_GET['batch'];
-    require_once 'init.php';
+    //require_once 'init.php';
     require_once 'views/ui_ybook_online.php';
 
 # Home

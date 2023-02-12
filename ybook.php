@@ -3,7 +3,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!isset($_SESSION['logged']) || $_SESSION['logged'] == 'guest') {
+if (!isset(_SESSION['ybook']['logged']) || _SESSION['ybook']['logged'] == 'guest') {
     //header('Location: ./index.php');
     //die();
 }
@@ -11,13 +11,13 @@ if (!isset($_SESSION['logged']) || $_SESSION['logged'] == 'guest') {
 require_once 'config.php';
 require_once 'helper.php';
 
-//print "<pre>"; print_r($_POST); print_r($_SESSION); exit;
+//print "<pre>"; print_r($_POST); print_r(_SESSION['ybook']); exit;
 if (!isset($_GET['batch'])) {
     # Redirect to create page when no batch entered
     header('Location: ./create.php');
     die();
 }
-//print "<pre>"; print_r($_POST); print_r($_SESSION); exit;
+//print "<pre>"; print_r($_POST); print_r(_SESSION['ybook']); exit;
 
 include_once 'models/sql_upload.php';
 $sql = new SQL_Upload; 
@@ -62,10 +62,10 @@ foreach ($_POST['data_list'] as $type => $uploaded) {
 }
 
 //print "<pre>"; print_r($_POST['graduates']); exit;
-//print "<pre>"; print_r($_SESSION); exit;
+//print "<pre>"; print_r(_SESSION['ybook']); exit;
 $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
 $ybook_theme = $sql->getYearbookTheme($_GET['batch']);
-$_POST['theme_sel'] = $_SESSION['themes'][$ybook_theme];
+$_POST['theme_sel'] = _SESSION['ybook']['themes'][$ybook_theme];
 $_POST['ybook'] = array(
     'batch' => $_GET['batch'],
     'theme' => $ybook_theme,

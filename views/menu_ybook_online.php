@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <a href="ybook.php?batch=<?php echo $_GET['batch'] ?>" class="btn btn-primary py-2 px-4">View Yearbook</a>
-                    <?php if ($_SESSION['logged'] == 'admin'): ?>
+                    <?php if ($_SESSION['ybook']['logged'] == 'admin'): ?>
                         <a href="index.php?menu=logout" class="btn btn-primary py-2 px-4 m-1">Logout</a>
                     <?php else: ?>
                         <a href="index.php?menu=login" class="btn btn-primary py-2 px-4">Admin Login</a>

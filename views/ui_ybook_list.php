@@ -1,3 +1,4 @@
+    <?php if (!empty($_POST['ybook_list'])): ?>
 
         <!-- Yearbook List Start -->
         <div class="container-xxl py-5">
@@ -30,3 +31,5 @@
             </div>
         </div>
         <!-- Yearbook List End -->
+        
+    <?php endif; ?>

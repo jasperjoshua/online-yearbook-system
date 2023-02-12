@@ -32,7 +32,7 @@
                             </div>
                         </div>
                     </div>
-                    <?php if ($_SESSION['logged'] == 'admin'): ?>
+                    <?php if ($_SESSION['ybook']['logged'] == 'admin'): ?>
                         <a href="index.php?menu=ybook" target="_blank" class="btn btn-primary py-2 px-4">Create Yearbook</a>
                         <a href="index.php?menu=logout" target="_blank" class="btn btn-primary py-2 px-4 m-1">Logout</a>
                     <?php else: ?>
