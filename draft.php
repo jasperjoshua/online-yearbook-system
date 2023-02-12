@@ -151,7 +151,7 @@
     
     //print "<pre>"; print_r(($_POST['theme_sel'])); print_r($_POST['ybook']); exit;
     $_POST['css_cls'] = 'ybook-page';
-    $_POST['active'] = isset($_GET['type']) && $_GET['type'] != 'image' ? $_GET['type'] : 'ybook_cover';
+    $_POST['active'] = isset($_GET['type']) ? $_GET['type'] : 'ybook_cover';
     require_once 'views/ui_draft_theme.php';
     
 ?>
