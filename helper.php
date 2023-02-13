@@ -155,4 +155,86 @@ function getTXTFileData($file, $remove_quotes=false)
     return $data;
 }
 
+function splitDataForDisplay($data)
+{
+    $row_orig = $_POST['rows'];
+    $cnt = count($data['list']);
+    $split = array();
+    $split[0]['center'] = isset($data['center']) ? $data['center'] : array();
+    $start = 0;
+    $rows = $row_orig - count($split[0]['center']);
+    if ($rows < 0) {
+        $rows = $row_orig;
+    }
+    $range = (($cnt-$start) > $rows) ? $rows : $cnt-$start;
+    $page = -1;
+    //print "<pre> Rows: $rows | Start: $start | Cnt: $cnt | Range: $range\n";
+    while ($range > 0) {
+        $page++;
+        if (!isset($split[$page]['center']) || empty($split[$page]['center'])) {  
+            $split[$page]['center'] = array();          
+            $rows = $row_orig;
+        }
+        $range = (($cnt-$start) > $rows) ? $rows : $cnt-$start;
+        $split[$page]['left'] = array_slice($data['list'], $start, $range);
+        //print "<pre> Rows: $rows | Start: $start | Cnt: $cnt | Range: $range\n";
+        //print_r($split[$page]['left']);
+        $start += $range;
+        $range = (($cnt-$start) > $rows) ? $rows : $cnt-$start;
+        $split[$page]['right'] = array();
+        if ($range > 0) {
+            $split[$page]['right'] = array_slice($data['list'], $start, $range);
+            //print "<pre> Rows: $rows | Start: $start | Cnt: $cnt | Range: $range\n";
+            //print_r($split[$page]['right']);
+            $start += $range;
+            $range = (($cnt-$start) > $rows) ? $rows : $cnt-$start;
+        } else {
+            //print "<pre> Rows: $rows | Start: $start | Cnt: $cnt | Range: $range\n";
+            $split[$page]['center'] = array_merge($split[$page]['center'], $split[$page]['left']);
+            $split[$page]['left'] = array();
+            $split[$page]['right'] = array();
+        }
+        $split[$page]['bottom'] = array();
+        //print_r($split[$page]);
+    }
+    if (isset($data['bottom']) && !empty($data['bottom'])) {
+        if (empty($split[$page]['left'])) {
+            $split[$page]['center'] = array_merge($split[$page]['center'], $data['bottom']);
+        } else {
+            $split[$page]['bottom'] = $data['bottom'];
+        }
+    }
+    $split = checkCenterData($split, $_POST['rows']);
+    //print "<pre> $rows\n"; 
+    //print_r($data); 
+    //print_r($split); exit;
+
+    return $split;
+}
+
+function checkCenterData($split, $row_orig=5)
+{
+    $center = $split[0]['center'];
+    $cnt = count($split[0]['center']);
+    if ( $cnt > $row_orig) {
+        $page = 0;
+        for ($start = 0; $start < $cnt; $start += $row_orig) {
+            $range = (($cnt-$start) > $row_orig) ? $row_orig : $cnt-$start;
+            $split[$page]['center'] = array_slice($center, $start, $range);
+            if (!isset($split[$page]['left']) || empty($split[$page]['left'])) {  
+                $split[$page]['left'] = array();     
+            }
+            if (!isset($split[$page]['right']) || empty($split[$page]['right'])) {  
+                $split[$page]['right'] = array();     
+            }
+            if (!isset($split[$page]['bottom']) || empty($split[$page]['bottom'])) {  
+                $split[$page]['bottom'] = array();     
+            }
+            $page++;
+        }
+    }
+
+    return $split;
+}
+
 ?>

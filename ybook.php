@@ -32,6 +32,7 @@ $_POST['bg_images'] = $sql->getBackgroundImages();
 $_POST['data_list'] = array_merge($_POST['sections'], $_POST['bg_images']);
 foreach ($_POST['data_list'] as $type => $uploaded) {
     $_POST[$type]['title'] = $sql->getDataTitle($type);
+    $_POST[$type]['rows'] = $sql->getDataPageRows($type);
     if ($uploaded) {
         $_POST[$type]['headers'] = $sql->getDataHeaders($type);
         $_POST[$type]['data'] = $sql->getUploadedData($type, $yearbook_key);

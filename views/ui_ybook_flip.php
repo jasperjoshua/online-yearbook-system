@@ -3,9 +3,10 @@
         <?php
             $_GET['type'] = $type;
             $_POST['title'] = $_POST[$type]['title'];
+            $_POST['rows'] = $_POST[$type]['rows'];
             if ($page_type == 'uploaded') {
                 $_POST['headers'] = $_POST[$type]['headers'];
-                $_POST['data'] = $_POST[$type]['data'];
+                $_POST['display'] = splitDataForDisplay($_POST[$type]['data']);
             }
         ?>
 
@@ -18,6 +19,7 @@
             <?php
                 $ui_file = 'views/flip_'.$_GET['type'].'.php';
                 if (is_file($ui_file)) {
+                    //print "<pre>"; print_r($_POST['display']); exit;
                     require_once $ui_file;
                 }
             ?>

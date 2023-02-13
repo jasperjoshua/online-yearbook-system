@@ -45,18 +45,17 @@ class SQL_Upload extends DB_Connect {
         return array(
             'ybook_cover' => 'image',
             'vision_mission' => 'static',
-            /*
             'officials' => 'uploaded',
             'board' => 'uploaded',
             'faculty' => 'uploaded',
+            'non_teaching' => 'uploaded',
             'congrats' => 'image',
-            'graduates' => 'uploaded',
-            'awardees' => 'uploaded',
+            //'graduates' => 'uploaded',
+            //'awardees' => 'uploaded',
             'bisu_hymn' => 'static',
-            'grad_song' => 'uploaded',
-            'tribute_song' => 'uploaded',
+            //'grad_song' => 'uploaded',
+            //'tribute_song' => 'uploaded',
             'officers' => 'uploaded',
-            */
             'ybook_back' => 'image',
         );
     }
@@ -89,6 +88,21 @@ class SQL_Upload extends DB_Connect {
         }
 
         return $title;
+    }
+
+    public function getDataPageRows($type='')
+    {
+        $list = array(
+            'board' => 6,
+            'non_teaching' => 8,
+            'officers' => 8,
+        );
+        $rows = 5;
+        if (isset($list[$type])) {
+            $rows = $list[$type];
+        }
+
+        return $rows;
     }
 
     public function getTableName($type='')
@@ -511,13 +525,11 @@ class SQL_Upload extends DB_Connect {
         $list = $this->getTableDataList($type, $yearbook_key, 'Bisu_Official_Key');
         $data = array();
         $data['center'] = array();
-        $data['left'] = array();
-        $data['right'] = array();
+        $data['bottom'] = array();
+        $data['list'] = array();
         if (!empty($list)) {
             $data['center'][] = array_shift($list);
-            $half = floor((count($list)) / 2);
-            $data['left'] = array_slice($list, 0, $half+1);
-            $data['right'] = array_slice($list, $half+1);
+            $data['list'] = $list;
         }
 
         return $data;
@@ -528,15 +540,10 @@ class SQL_Upload extends DB_Connect {
         $list = $this->getTableDataList($type, $yearbook_key, 'Board_Key');
         $data = array();
         $data['center'] = array();
-        $data['left'] = array();
-        $data['right'] = array();
+        $data['bottom'] = array();
+        $data['list'] = array();
         if (!empty($list)) {
-            $data['center'][] = array_shift($list);
-            $data['center'][] = array_shift($list);
-            $data['center'][] = array_shift($list);
-            $half = floor((count($list)) / 2);
-            $data['left'] = array_slice($list, 0, $half);
-            $data['right'] = array_slice($list, $half);
+            $data['center'] = $list;
         }
 
         return $data;
@@ -547,13 +554,11 @@ class SQL_Upload extends DB_Connect {
         $list = $this->getTableDataList($type, $yearbook_key, 'Staff_Key');
         $data = array();
         $data['center'] = array();
-        $data['left'] = array();
-        $data['right'] = array();
+        $data['bottom'] = array();
+        $data['list'] = array();
         if (!empty($list)) {
             $data['center'][] = array_shift($list);
-            $half = floor((count($list)) / 2);
-            $data['left'] = array_slice($list, 0, $half);
-            $data['right'] = array_slice($list, $half);
+            $data['list'] = $list;
         }
 
         return $data;
@@ -564,12 +569,9 @@ class SQL_Upload extends DB_Connect {
         $list = $this->getTableDataList($type, $yearbook_key, 'Staff_Key');
         $data = array();
         $data['center'] = array();
-        $data['left'] = array();
-        $data['right'] = array();
+        $data['bottom'] = array();
+        $data['list'] = array();
         if (!empty($list)) {
-            //$half = floor((count($list)) / 2);
-            //$data['left'] = array_slice($list, 0, $half);
-            //$data['right'] = array_slice($list, $half);
             $data['center'] = $list;
         }
 
@@ -582,16 +584,10 @@ class SQL_Upload extends DB_Connect {
         $data = array();
         $data['center'] = array();
         $data['bottom'] = array();
-        $data['left'] = array();
-        $data['right'] = array();
+        $data['list'] = array();
         if (!empty($list)) {
-            /*
-            $data['center'][] = array_shift($list);
-            $data['bottom'][] = array_pop($list);
-            $half = floor((count($list)) / 2);
-            $data['left'] = array_slice($list, 0, $half);
-            $data['right'] = array_slice($list, $half);
-            */
+            //$data['center'][] = array_shift($list);
+            //$data['bottom'][] = array_pop($list);
             $data['center'] = $list;
         }
 

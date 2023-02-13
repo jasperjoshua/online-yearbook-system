@@ -28,6 +28,7 @@
     $_POST['sections'] = $sql->getYearBookSections();
     foreach ($_POST['sections'] as $type => $uploaded) {
         $_POST[$type]['title'] = $sql->getDataTitle($type);
+        $_POST[$type]['rows'] = $sql->getDataPageRows($type);
         if ($uploaded) {
             $_POST[$type]['headers'] = $sql->getDataHeaders($type);
             $_POST[$type]['data'] = $sql->getUploadedData($type, $yearbook_key);

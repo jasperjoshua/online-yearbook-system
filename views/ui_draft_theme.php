@@ -21,7 +21,6 @@
                 <form action="draft.php?m=publish&batch=<?php echo $_GET['batch'] ?>" method="POST" enctype="multipart/form-data" class="p-3">
                     <button class="btn btn-primary py-4 px-5" type="submit" name="publish" value="publish">Publish Yearbook</button>
                 </form>
-                <button id="download" class="btn btn-primary py-4 px-5" type="submit">Download PDF</button>
             </h1>
         </div>
         <div class="m-5 mt-0 mb-0">
@@ -109,9 +108,10 @@
                             <?php
                                 $_GET['type'] = $type;
                                 $_POST['title'] = $_POST[$type]['title'];
+                                $_POST['rows'] = $_POST[$type]['rows'];
                                 if ($page_type == 'uploaded') {
                                     $_POST['headers'] = $_POST[$type]['headers'];
-                                    $_POST['data'] = $_POST[$type]['data'];
+                                    $_POST['display'] = splitDataForDisplay($_POST[$type]['data']);
                                 }
                             ?>
                             
@@ -140,7 +140,7 @@
                                             </div>
                                         <?php else: ?>
                                             <div class="row g-3">
-                                                <p class="text-secondary text-uppercase mb-2">Select TSV (Tab Separated Values) file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
+                                                <p class="text-secondary text-uppercase mb-2">Select TSV (Tab Separated Values) file (.tsv) to upload <?php echo $_POST['title'] ?> list</p>
                                                 <div class="col-md-9">
                                                     <input type="file" name="uploaded_file" accept="text/tsv" class="form-control form-control-lg" id="uploaded_file" />
                                                 </div>
@@ -181,16 +181,15 @@
                                         </div>
                                     </div>
                                 </form>
+
                             <?php endif; ?>
 
-                            <div style="padding-top:30px">
-                                <?php
-                                    $ui_file = 'views/ui_'.$_GET['type'].'.php';
-                                    if (is_file($ui_file)) {
-                                        require_once $ui_file;
-                                    }
-                                ?>
-                            </div>
+                            <?php
+                                $ui_file = 'views/ui_'.$_GET['type'].'.php';
+                                if (is_file($ui_file)) {
+                                    require_once $ui_file;
+                                }
+                            ?>
                         </div>
                     <?php endforeach; ?>
                 </div>

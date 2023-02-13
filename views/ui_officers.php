@@ -1,46 +1,20 @@
-<center>
-<div class="container-fluid bg-light py-4 mb-5 <?php echo $_POST['css_cls'] ?>" 
-    style="background-image: url(<?php echo $_POST['theme_sel']['images']['content_bg_page'] ?>); ">
-
-    <div class="px-5 ms-xl-4 ">
-        <span class="h1 fw-bold mb-0">
-            <img class="img-fluid " src="img/bisu_logo.png" width="10%" alt="">
-            BATCH OFFICERS
-        </span>
-    </div>
-    <div class="container-fluid">
-        <div class="row mt-1">
-            <div class="col-sm-12 mt-4">
-                <?php foreach($_POST['data']['center'] as $value): ?>
-                <div class="row mt-4">
-                    <p class="h6 text-blank m-0"><?php echo $value['Full_Name'] ?></p>
-                    <p class="text-muted m-0"><?php echo $value['Position'] ?></p>
+<?php foreach ($_POST['display'] as $i => $_POST['data']): ?>
+    <?php if (($i % 2) == 0): ?>
+        <div class="row m-0">
+    <?php endif; ?>
+            <div class="col-sm-6">
+                <center>
+                <div class="container-fluid bg-light py-3 m-0 mb-5 p-0 ybook-page" 
+                    style="background-image: url(<?php echo $_POST['theme_sel']['images']['content_bg_page'] ?>); "
+                >
+                    <?php include 'views/tpl_center.php' ?>
                 </div>
-                <?php endforeach; ?>
+                </center>
             </div>
-            <div class="col-sm-6 mt-4">
-                <?php foreach($_POST['data']['left'] as $value): ?>
-                <div class="row mt-4">
-                    <p class="h6 text-blank m-0"><?php echo $value['Full_Name'] ?></p>
-                    <p class="text-muted m-0"><?php echo $value['Position'] ?></p>
-                </div>
-                <?php endforeach; ?>
-            </div>
-            <div class="col-sm-6 mt-4">
-                <?php foreach($_POST['data']['right'] as $value): ?>
-                <div class="row mt-4">
-                    <p class="h6 text-blank m-0"><?php echo $value['Full_Name'] ?></p>
-                    <p class="text-muted m-0"><?php echo $value['Position'] ?></p>
-                </div>
-                <?php endforeach; ?>
-            </div>
-            <div class="col-sm-12">
-                <?php foreach($_POST['data']['bottom'] as $value): ?>
-                    <p class="h6 text-blank m-0"><?php echo $value['Full_Name'] ?></p>
-                    <p class="text-muted m-0"><?php echo $value['Position'] ?></p>
-                <?php endforeach; ?>
-            </div>
+    <?php if (($i % 2) == 1): ?>
         </div>
+    <?php endif; ?>
+<?php endforeach; ?>
+<?php if ((count($_POST['display']) % 2) == 1): ?>
     </div>
-</center>
-
+<?php endif; ?>
