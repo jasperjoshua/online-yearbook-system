@@ -4,7 +4,7 @@
             $_GET['type'] = $type;
             $_POST['title'] = $_POST[$type]['title'];
             $_POST['rows'] = isset($_POST[$type]['rows']) ? $_POST[$type]['rows']: 0;
-            if ($page_type == 'uploaded') {
+            if ($page_type == 'uploaded' && $type != 'graduates') {
                 $_POST['headers'] = $_POST[$type]['headers'];
                 $_POST['display'] = splitDataForDisplay($_POST[$type]['data']);
             }

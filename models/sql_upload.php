@@ -50,8 +50,8 @@ class SQL_Upload extends DB_Connect {
             'faculty' => 'uploaded',
             'non_teaching' => 'uploaded',
             'congrats' => 'image',
-            //'graduates' => 'uploaded',
-            'awardees' => 'uploaded',
+            //'awardees' => 'uploaded',
+            'graduates' => 'uploaded',
             'bisu_hymn' => 'static',
             'grad_song' => 'uploaded',
             'tribute_song' => 'uploaded',
@@ -95,6 +95,7 @@ class SQL_Upload extends DB_Connect {
         $list = array(
             'board' => 6,
             'non_teaching' => 8,
+            'officials' => 6,
             'officers' => 8,
             'grad_song' => 18,
             'tribute_song' => 18,
@@ -394,8 +395,13 @@ class SQL_Upload extends DB_Connect {
             FROM courses
         ";
         $list = $this->getDataFromTable($sql);
+        $courses = array();
+        foreach ($list as $row) {
+            $code = $row['Course_Code'];
+            $courses[$code] = $row;
+        }
 
-        return $list;
+        return $courses;
     } 
 
     public function getCourseKey($course_code)
@@ -433,7 +439,7 @@ class SQL_Upload extends DB_Connect {
             FROM graduates as g
             LEFT JOIN courses as c ON g.Course_Key = c.Course_Key
             WHERE g.Yearbook_Key = $yearbook_key
-            ORDER BY Course_Code, Last_Name, First_Name
+            ORDER BY Course_Key, Last_Name, First_Name
         ";
         $list = $this->getDataFromTable($sql);
 
@@ -448,6 +454,41 @@ class SQL_Upload extends DB_Connect {
             $course = $grad['Course_Code'];
             $data[$course][] = $grad;
         }
+
+        return $data;
+    }
+
+    public function getGraduatesByPage($yearbook_key, $rows, $cols)
+    {
+        $list = $this->getGraduatesByCourse($yearbook_key);
+        $data = array();
+        $blank_profile_pic = YBOOK_IMG_DIR."/blank_profile_pic.jpg";
+        foreach ($list as $course_code => $graduates) {
+            $dir = YBOOK_IMG_DIR."/{$_GET['batch']}/graduates/{$course_code}";
+            $data[$course_code] = array();
+            $row = 0;
+            $col = 0;
+            $page = 0;
+            foreach ($graduates as $grad) {
+                $profile_pic = "{$dir}/{$grad['Pic_File']}";
+                //print "<pre>$profile_pic\n"; exit;
+                if (!is_file($profile_pic)) {
+                    $profile_pic = $blank_profile_pic;
+                }
+                $grad['pic_path'] = $profile_pic;
+                $data[$course_code][$page][$row][$col] = $grad;
+                $col++;
+                if ($col == $cols) {
+                    $col = 0;
+                    $row++;
+                    if ($row == $rows) {
+                        $row = 0;
+                        $page++;
+                    }
+                }
+            }
+        }
+        //print "<pre>"; print_r($data); exit;
 
         return $data;
     }

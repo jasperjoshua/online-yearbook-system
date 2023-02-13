@@ -33,13 +33,17 @@ $_POST['data_list'] = array_merge($_POST['sections'], $_POST['bg_images']);
 foreach ($_POST['data_list'] as $type => $uploaded) {
     $_POST[$type]['title'] = $sql->getDataTitle($type);
     $_POST[$type]['rows'] = $sql->getDataPageRows($type);
-    if ($uploaded) {
+    if ($type == 'graduates') {
+        $_POST['courses'] = $sql->getCourseList();
+        $_POST['layout_rows'] = 2;
+        $_POST['layout_cols'] = 3;
+        $_POST['graduate_list'] = $sql->getGraduatesByPage($yearbook_key, $_POST['layout_rows'], $_POST['layout_cols']);
+        //print "<pre>"; print_r($_POST['graduate_list']); exit;
+    } elseif ($uploaded) {
         $_POST[$type]['headers'] = $sql->getDataHeaders($type);
         $_POST[$type]['data'] = $sql->getUploadedData($type, $yearbook_key);
     }
 }
-
-//print "<pre>"; print_r($_POST['graduates']); exit;
 //print "<pre>"; print_r($_SESSION['ybook']); exit;
 $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
 $ybook_theme = $sql->getYearbookTheme($_GET['batch']);
@@ -53,12 +57,6 @@ $_POST['ybook'] = array(
 
 # Use images from yearbook img dir (uploaded) if available, instead of default theme images
 $theme->setYearbookImages($ybook_dir);
-
-$courses = $sql->getCourseList();
-$_POST['courses'] = $sql->getCourseList();
-$graduates = $sql->getGraduatesByCourse($yearbook_key);
-//print "<pre>"; print_r($graduates);
-$_POST['graduate_list'] = $graduates;
 
 $_POST['css_cls'] = 'ybook-flip';
 require_once 'views/ui_ybook.php';

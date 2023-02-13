@@ -4,7 +4,7 @@
             <div class="container-fluid bg-light py-3 m-0 ybook-flip" 
                 style="background-image: url(<?php echo $_POST['theme_sel']['images']['print_bg_page'] ?>); "
             >  
-                <?php include 'views/tpl_lines.php' ?>
+                <?php include 'views/tpl_song.php' ?>
             </div>
         </center>
     </div>

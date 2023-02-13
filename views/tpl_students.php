@@ -11,7 +11,7 @@
                         <?php foreach ($pages as $student): ?>
                             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="team-item text-center rounded overflow-hidden">
-                                    <div class="rounded-circle overflow-hidden m-4">
+                                    <div class="rounded-circle overflow-hidden m-1">
                                         <img class="img-fluid" src="<?php echo $student['pic_path'] ?>" alt="">
                                     </div>
                                     <h5 class="mb-0"><?php echo $student['name'] ?></h5>

@@ -1,4 +1,4 @@
-<div class="px-3 ms-xl-4 ">
+    <div class="px-3 ms-xl-4 ">
             <span class="h4 fw-bold m-0">
                 <img class="img-fluid " src="img/bisu_logo.png" width="10%" alt="">
                 <?php echo $_POST['title'] ?>

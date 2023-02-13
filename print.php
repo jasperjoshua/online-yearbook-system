@@ -29,7 +29,13 @@
     foreach ($_POST['sections'] as $type => $uploaded) {
         $_POST[$type]['title'] = $sql->getDataTitle($type);
         $_POST[$type]['rows'] = $sql->getDataPageRows($type);
-        if ($uploaded) {
+        if ($type == 'graduates') {
+            $_POST['courses'] = $sql->getCourseList();
+            $_POST['layout_rows'] = 2;
+            $_POST['layout_cols'] = 3;
+            $_POST['graduate_list'] = $sql->getGraduatesByPage($yearbook_key, $_POST['layout_rows'], $_POST['layout_cols']);
+            //print "<pre>"; print_r($_POST['graduate_list']); exit;
+        } elseif ($uploaded) {
             $_POST[$type]['headers'] = $sql->getDataHeaders($type);
             $_POST[$type]['data'] = $sql->getUploadedData($type, $yearbook_key);
         }
@@ -50,12 +56,6 @@
 
     # Use images from yearbook img dir (uploaded) if available, instead of default theme images
     $theme->setYearbookImages($ybook_dir);
-    
-    $courses = $sql->getCourseList();
-    $_POST['courses'] = $sql->getCourseList();
-    $graduates = $sql->getGraduatesByCourse($yearbook_key);
-    //print "<pre>"; print_r($graduates);
-    $_POST['graduate_list'] = $graduates;
     
     //print "<pre>"; print_r(($_POST['theme_sel'])); print_r($_POST['ybook']); exit;
     $_POST['css_cls'] = 'ybook-flip';
