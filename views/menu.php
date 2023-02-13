@@ -3,7 +3,7 @@
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
-                    <h1 class="text-primary m-0"><i class="fas fa-graduation-cap me-3"></i>BISU - Balilihan Campus</h1>
+                    <h1 class="text-primary m-0"><i class="fas fa-graduation-cap me-3"></i>BISU - BC</h1>
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -19,7 +19,7 @@
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                     <i class="bi bi-printer"></i>
-                                    P-friendly
+                                    Printer-friendly
                                 </a>
                                 <div class="dropdown-menu m-0">
                                     <?php foreach ($_POST['ybook_list'] as $batch => $ybook_data): ?>
@@ -41,7 +41,7 @@
                         <?php endif; ?>
                     </div>
                     <?php if ($_SESSION['ybook']['logged'] == 'admin'): ?>
-                        <a href="create.php" class="btn btn-primary py-2 px-4">Manage Yearbooks</a>
+                        <a href="create.php" class="btn btn-primary py-2 px-4">Manage</a>
                         <a href="index.php?menu=logout" class="btn btn-primary py-2 px-4 m-1">Logout</a>
                     <?php else: ?>
                         <a href="index.php?menu=login" class="btn btn-primary py-2 px-4">Admin Login</a>
