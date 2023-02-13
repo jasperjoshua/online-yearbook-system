@@ -204,7 +204,11 @@ function splitDataForDisplay($data)
             $split[$page]['bottom'] = $data['bottom'];
         }
     }
-    $split = checkCenterData($split, $_POST['rows']);
+    $split = checkCenterData($split, $rows);
+    if (isset($data['song_title'])  && isset($data['singer'])) {
+        $split[0]['song_title'] = $data['song_title'];
+        $split[0]['singer'] = $data['singer'];
+    }
     //print "<pre> $rows\n"; 
     //print_r($data); 
     //print_r($split); exit;

@@ -51,10 +51,10 @@ class SQL_Upload extends DB_Connect {
             'non_teaching' => 'uploaded',
             'congrats' => 'image',
             //'graduates' => 'uploaded',
-            //'awardees' => 'uploaded',
+            'awardees' => 'uploaded',
             'bisu_hymn' => 'static',
-            //'grad_song' => 'uploaded',
-            //'tribute_song' => 'uploaded',
+            'grad_song' => 'uploaded',
+            'tribute_song' => 'uploaded',
             'officers' => 'uploaded',
             'ybook_back' => 'image',
         );
@@ -96,6 +96,8 @@ class SQL_Upload extends DB_Connect {
             'board' => 6,
             'non_teaching' => 8,
             'officers' => 8,
+            'grad_song' => 18,
+            'tribute_song' => 18,
         );
         $rows = 5;
         if (isset($list[$type])) {
@@ -417,9 +419,8 @@ class SQL_Upload extends DB_Connect {
     {
         $list = $this->getCourseList();
         $data = array();
-        $data['center'] = array();
-        $data['left'] = array();
-        $data['right'] = array();
+        $data['list'] = array();
+        $data['bottom'] = array();
         $data['center'] = $list;
 
         return $data;
@@ -484,15 +485,13 @@ class SQL_Upload extends DB_Connect {
         $data['table_headers'] = array();
         $song = $this->getSongData($yearbook_key, 'grad_song');
         $data['center'] = array();
-        $data['left'] = array();
-        $data['right'] = array();
+        $data['list'] = array();
+        $data['bottom'] = array();
         if (!empty($song)) {
-            $data['center'][] = $song['Song_Title'];
-            $data['center'][] = $song['Singer'];
+            $data['song_title'] = $song['Song_Title'];
+            $data['singer'] = $song['Singer'];
             if (!empty($song['Lyrics'])) {
-                $half = floor((count($song['Lyrics'])) / 2);
-                $data['left'] = array_slice($song['Lyrics'], 0, $half);
-                $data['right'] = array_slice($song['Lyrics'], $half);
+                $data['center'] = $song['Lyrics'];
             }
         }
 
@@ -505,15 +504,13 @@ class SQL_Upload extends DB_Connect {
         $data['table_headers'] = array();
         $song = $this->getSongData($yearbook_key, 'tribute_song');
         $data['center'] = array();
-        $data['left'] = array();
-        $data['right'] = array();
+        $data['list'] = array();
+        $data['bottom'] = array();
         if (!empty($song)) {
-            $data['center'][] = $song['Song_Title'];
-            $data['center'][] = $song['Singer'];
+            $data['song_title'] = $song['Song_Title'];
+            $data['singer'] = $song['Singer'];
             if (!empty($song['Lyrics'])) {
-                $half = floor((count($song['Lyrics'])) / 2);
-                $data['left'] = array_slice($song['Lyrics'], 0, $half);
-                $data['right'] = array_slice($song['Lyrics'], $half);
+                $data['center'] = $song['Lyrics'];
             }
         }
 

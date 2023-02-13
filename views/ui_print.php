@@ -61,7 +61,7 @@
                             <?php
                                 $_GET['type'] = $type;
                                 $_POST['title'] = $_POST[$type]['title'];
-                                $_POST['rows'] = $_POST[$type]['rows'];
+                                $_POST['rows'] = isset($_POST[$type]['rows']) ? $_POST[$type]['rows']: 0;
                                 if ($page_type == 'uploaded') {
                                     $_POST['headers'] = $_POST[$type]['headers'];
                                     $_POST['display'] = splitDataForDisplay($_POST[$type]['data']);
