@@ -530,15 +530,9 @@
     background-size: auto 100%;
 }
 
-@media (min-width: 1025px) {
-    .h-custom-2 {
-        height: 100%;
-    }
-}
-
 .ybook-page {
     width: 461px;
-    height: 600;
+    height: 600px;
 }
 
 div.ybook-page {

@@ -11,7 +11,7 @@
 
         <?php if ($page_type == 'image'): ?>
             <div class=" ybook-flip">
-                <img class="img-fluid ybook-page" src="<?php echo $_POST['theme_sel']['images'][$_GET['type']]?>" width="100%" height="100%" alt="">
+                <img class="img-fluid ybook-page text-center" src="<?php echo $_POST['theme_sel']['images'][$_GET['type']]?>" width="100%" height="100%" alt="">
             </div>
 
         <?php else: ?>

@@ -11,10 +11,27 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="index.php" class="nav-item nav-link <?php echo ((!isset($_GET['menu']) || $_GET['menu'] == 'home') ? 'active' : '') ?> ">Home</a>
+                        <a href="index.php" class="nav-item nav-link <?php echo ((!isset($_GET['menu']) || $_GET['menu'] == 'home') ? 'active' : '') ?> ">
+                            <i class="bi bi-house-door"></i>
+                            Home
+                        </a>
                         <?php if (!empty($_POST['ybook_list'])): ?>
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Yearbooks</a>
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="bi bi-printer"></i>
+                                    P-friendly
+                                </a>
+                                <div class="dropdown-menu m-0">
+                                    <?php foreach ($_POST['ybook_list'] as $batch => $ybook_data): ?>
+                                        <a href="print.php?batch=<?php echo $batch ?>" target="_blank" class="dropdown-item">Class of <?php echo $batch ?></a>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="bi bi-book"></i>
+                                    Flip View
+                                </a>
                                 <div class="dropdown-menu m-0">
                                     <?php foreach ($_POST['ybook_list'] as $batch => $ybook_data): ?>
                                         <a href="ybook.php?batch=<?php echo $batch ?>" target="_blank" class="dropdown-item">Class of <?php echo $batch ?></a>

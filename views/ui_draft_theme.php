@@ -2,7 +2,7 @@
     require_once 'views/header.php';
     require_once 'views/menu_create.php';
 ?>
-<script>
+<script type="text/javascript">
     $(document).ready(function() {  
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
@@ -12,6 +12,7 @@
         }
     });
 </script>
+
 <div class="container-xxl bg-white p-0">
     <div class="form-floating">
         <div class="text-center wow fadeInUp mt-5 pt-5" data-wow-delay="0.1s">
@@ -20,6 +21,7 @@
                 <form action="draft.php?m=publish&batch=<?php echo $_GET['batch'] ?>" method="POST" enctype="multipart/form-data" class="p-3">
                     <button class="btn btn-primary py-4 px-5" type="submit" name="publish" value="publish">Publish Yearbook</button>
                 </form>
+                <button id="download" class="btn btn-primary py-4 px-5" type="submit">Download PDF</button>
             </h1>
         </div>
         <div class="m-5 mt-0 mb-0">

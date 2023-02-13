@@ -8,8 +8,8 @@
     define("ADMIN_PASSWORD", 'admin');
     define("DB_NAME", 'bisu_ybook');
     define("DB_HOST", 'localhost');
-    define("DB_USER", "bisu");
-    define("DB_PASS", "B!su");
+    define("DB_USER", "root");
+    define("DB_PASS", "");
 
     # Department List
     define('ICT', 'Information & Communications Technology Deparment');
