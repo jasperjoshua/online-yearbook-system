@@ -43,6 +43,9 @@ class SQL_Upload extends DB_Connect {
     public function getYearBookSections()
     {
         return array(
+            'graduates' => 'uploaded',
+        );
+        return array(
             'ybook_cover' => 'image',
             'vision_mission' => 'static',
             'officials' => 'uploaded',
@@ -388,6 +391,19 @@ class SQL_Upload extends DB_Connect {
         return $theme;
     } 
 
+    public function getYearbookSettings($yearbook_key)
+    {
+        $sql = "
+            SELECT *
+            FROM yearbooks
+            WHERE Yearbook_Key = $yearbook_key
+        ";
+        $list = $this->getDataFromTable($sql);
+        $data = $list[0];
+
+        return $data;
+    } 
+
     public function getCourseList()
     {
         $sql = "
@@ -642,6 +658,32 @@ class SQL_Upload extends DB_Connect {
             $res = $this->db->error;
         }
         //var_dump($res);
+
+        return $res;
+
+    }
+
+    public function updateYearbookLayout($batch, $data)
+    {
+        $prof_layout = isset($_POST['grad_profile_layout']) ? $_POST['grad_profile_layout'] : 'rounded';
+        $cols = 3;
+        $rows = 2;
+        if (isset($_POST['grad_page_layout']) && $_POST['grad_page_layout'] == '4x3') {
+            $cols = 4;
+            $rows = 3;
+        }
+        $set_sql  = " Grad_Profile='{$prof_layout}'";
+        $set_sql .= ", Grad_Page_Cols=$cols";
+        $set_sql .= ", Grad_Page_Rows=$rows";
+
+        $sql = "UPDATE yearbooks SET {$set_sql} WHERE Batch='{$batch}' ";
+        //print "<pre> $sql\n";
+        if ($this->db->query($sql) === true) {
+            $res = true;
+        } else {
+            $res = $this->db->error;
+        }
+        var_dump($res);
 
         return $res;
 

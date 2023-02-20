@@ -20,6 +20,9 @@ CREATE TABLE courses (
 CREATE TABLE yearbooks (
   Yearbook_Key int(10) unsigned NOT NULL auto_increment,
   Batch int(10) NOT NULL,
+  Grad_Page_Cols int(10) NOT NULL DEFAULT 3,
+  Grad_Page_Rows int(10) NOT NULL DEFAULT 2,
+  Grad_Profile char(15) NOT NULL DEFAULT 'rounded',
   Theme char(100) NOT NULL,
   Is_Published int(1) NOT NULL Default 0,
   PRIMARY KEY  (Yearbook_Key),

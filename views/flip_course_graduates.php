@@ -1,3 +1,8 @@
+<?php
+
+$_POST['profile_style'] = 'square';
+
+?>
 
 <!-- Student Start -->
 <div>
@@ -13,7 +18,7 @@
             <?php foreach ($page as $student): ?>
                 <div class="col-md-3">
                     <div class="text-center rounded overflow-hidden">
-                        <div class="rounded-circle overflow-hidden m-1">
+                        <div class="<?php echo $_POST['profile_style'] ?>-circle overflow-hidden m-1">
                             <img class="img-fluid" src="<?php echo $student['pic_path'] ?>" alt="<?php echo $student['name'] ?>">
                         </div>     
                         <span style="font-size:0.7rem"><?php echo $student['name'] ?>

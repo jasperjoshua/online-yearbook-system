@@ -31,8 +31,11 @@
         $_POST[$type]['rows'] = $sql->getDataPageRows($type);
         if ($type == 'graduates') {
             $_POST['courses'] = $sql->getCourseList();
-            $_POST['layout_rows'] = 2;
-            $_POST['layout_cols'] = 3;
+   
+            $_POST['ybook_layout'] = $sql->getYearbookSettings($yearbook_key);
+            $_POST['layout_cols'] = $_POST['ybook_layout']['Grad_Page_Cols'];
+            $_POST['layout_rows'] = $_POST['ybook_layout']['Grad_Page_Rows'];
+            $_POST['layout_profile'] = $_POST['ybook_layout']['Grad_Profile'];
             $_POST['graduate_list'] = $sql->getGraduatesByPage($yearbook_key, $_POST['layout_rows'], $_POST['layout_cols']);
             //print "<pre>"; print_r($_POST['graduate_list']); exit;
         } elseif ($uploaded) {

@@ -1,4 +1,6 @@
-
+<?php
+    $profile_style = $_POST['layout_profile'];
+?>
 <div class=" ybook-flip">
     <img class="img-fluid ybook-page text-center" src="<?php echo $_POST['theme_sel']['images'][$_POST['course_sel'].'_cover'] ?>" width="100%" height="100%" alt="">
 </div>
@@ -14,8 +16,8 @@
                 <div class="row">
                     <?php foreach ($col_students as $col => $student): ?>
                         <div class="col-md-<?php echo (12/$_POST['layout_cols'])?> m-0">
-                            <div class="team-item text-center rounded ">
-                                <div class="rounded-circle overflow-hidden mt-2">
+                            <div class="team-item text-center <?php echo $profile_style ?> ">
+                                <div class="<?php echo $profile_style ?>-circle overflow-hidden mt-2">
                                     <img class="img-fluid" src="<?php echo $student['pic_path'] ?>" alt="">
                                 </div>
                                 <h6 class="mb-0"><?php echo $student['Last_Name'] ?>,</h5>
