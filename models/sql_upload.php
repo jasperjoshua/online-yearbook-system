@@ -455,7 +455,7 @@ class SQL_Upload extends DB_Connect {
             FROM graduates as g
             LEFT JOIN courses as c ON g.Course_Key = c.Course_Key
             WHERE g.Yearbook_Key = $yearbook_key
-            ORDER BY Course_Key, Last_Name, First_Name
+            ORDER BY Course_Key, Gender DESC, Last_Name, First_Name
         ";
         $list = $this->getDataFromTable($sql);
 
