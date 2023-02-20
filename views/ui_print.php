@@ -29,7 +29,7 @@
             html2canvas($(".html-content")[0]).then(function(canvas) {
                 var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
                 var imgData = canvas.toDataURL("image/jpeg", 1.0);
-                var x_position = -(PDF_Width-45);
+                var x_position = -(PDF_Width-135); // -45
                 pdf.addImage(imgData, 'JPG', x_position, top_left_margin, canvas_image_width, canvas_image_height);
                 for (var i = 1; i <= totalPDFPages; i++) { 
                     pdf.addPage(PDF_Width, PDF_Height);

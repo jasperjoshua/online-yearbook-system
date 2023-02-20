@@ -31,8 +31,8 @@
         $_POST[$type]['rows'] = $sql->getDataPageRows($type);
         if ($type == 'graduates') {
             $_POST['courses'] = $sql->getCourseList();
-            $_POST['layout_rows'] = 2;
-            $_POST['layout_cols'] = 3;
+            $_POST['layout_rows'] = 4;
+            $_POST['layout_cols'] = 4;
             $_POST['graduate_list'] = $sql->getGraduatesByPage($yearbook_key, $_POST['layout_rows'], $_POST['layout_cols']);
             //print "<pre>"; print_r($_POST['graduate_list']); exit;
         } elseif ($uploaded) {
