@@ -36,7 +36,7 @@
         die();
     }
 
-    $yearbook_key = $sql->getYearbookKey($_GET['batch']);
+    $yearbook_key = $sql->getYearbookKey($_GET['batch']); 
     $_SESSION['ybook']['batch_sel'] = $_GET['batch'];
     //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;
     
@@ -94,6 +94,15 @@
             } else {
                 $_POST['danger'] = 'Something went wrong.';
             }
+        } elseif ($_GET['m'] == 'layout') {
+            # Update yearbook layouot
+            $updated = $sql->updateYearbookLayout($_GET['batch'], $_POST);
+            if ($updated) {
+                $_POST['success'] = 'The yearbook layout has been updated.';
+            } else {
+                $_POST['danger'] = 'Something went wrong.';
+            }
+            
         } elseif ($_GET['m'] == 'apply_theme') {
             //print "<pre>"; print_r($_POST); print_r($_SESSION['ybook']); exit;
             if (isset($_POST['theme']) && $_POST['theme'] != '') {
@@ -116,7 +125,9 @@
             }
         }
     }
-
+   
+    $_POST['ybook_layout'] = $sql->getYearbookSettings($yearbook_key);
+    //print "<pre>"; print_r($_POST); exit;
     $_POST['sections'] = $sql->getYearBookSections();
     foreach ($_POST['sections'] as $type => $uploaded) {
         $_POST[$type]['title'] = $sql->getDataTitle($type);
