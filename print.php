@@ -23,10 +23,11 @@
 
     $yearbook_key = $sql->getYearbookKey($_GET['batch']);
     $_SESSION['ybook']['batch_sel'] = $_GET['batch'];
+    $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
     //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;
     
     $_POST['sections'] = $sql->getYearBookSections();
-    foreach ($_POST['sections'] as $type => $uploaded) {
+    foreach ($_POST['sections'] as $type => $section_type) {
         $_POST[$type]['title'] = $sql->getDataTitle($type);
         $_POST[$type]['rows'] = $sql->getDataPageRows($type);
         if ($type == 'graduates') {
@@ -38,16 +39,17 @@
             $_POST['layout_profile'] = $_POST['ybook_layout']['Grad_Profile'];
             $_POST['graduate_list'] = $sql->getGraduatesByPage($yearbook_key, $_POST['layout_rows'], $_POST['layout_cols']);
             //print "<pre>"; print_r($_POST['graduate_list']); exit;
-        } elseif ($uploaded) {
+        } elseif ($section_type == 'uploaded') {
             $_POST[$type]['headers'] = $sql->getDataHeaders($type);
             $_POST[$type]['data'] = $sql->getUploadedData($type, $yearbook_key);
+        } elseif ($section_type == 'image-multi-optional') {
+            $_POST['image-multi-optional'][$type] = getImagesFromDir($ybook_dir, $type.'_page_');
         }
     }
     $_POST['data_list'] = $_POST['sections'];
     //print "<pre>"; print_r($_POST); exit;
 
     //print "<pre>"; print_r($_SESSION['ybook']); exit;
-    $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
     $ybook_theme = $sql->getYearbookTheme($_GET['batch']);
     $_POST['theme_sel'] = $_SESSION['ybook']['themes'][$ybook_theme];
     $_POST['ybook'] = array(

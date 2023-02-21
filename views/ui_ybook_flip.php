@@ -12,8 +12,16 @@
 
         <?php if ($page_type == 'image'): ?>
             <div class=" ybook-flip">
-                <img class="img-fluid ybook-page text-center" src="<?php echo $_POST['theme_sel']['images'][$_GET['type']]?>" width="100%" height="100%" alt="">
+                <img class="img-fluid ybook-page text-center" src="<?php echo $_POST['theme_sel']['images'][$_GET['type']] ?>" width="100%" height="100%" alt="">
             </div>
+
+        <?php elseif ($page_type == 'image-multi-optional'): ?>
+            
+            <?php foreach (array_values($_POST['image-multi-optional'][$type]) as $i => $img_path): ?>
+                <div class=" ybook-flip">
+                    <img class="img-fluid ybook-page text-center" src="<?php echo $img_path ?>" width="100%" height="100%" alt="">
+                </div>
+            <?php endforeach; ?>
 
         <?php else: ?>
             <?php

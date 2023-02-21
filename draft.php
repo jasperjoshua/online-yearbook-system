@@ -41,7 +41,17 @@
     //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;
     
     if (isset($_GET['m'])) {
-        if ($_GET['m'] == 'upload') {
+        if ($_GET['m'] == 'delete') {
+            # Delete image 
+            //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;
+            if (is_file($_POST['image_path'])) {
+                unlink($_POST['image_path']);
+                $_POST['success'] = 'The image has been deleted.';
+            } else {                
+                $_POST['danger'] = 'The image does not exist.';
+            }
+
+        } elseif ($_GET['m'] == 'upload') {
             if (isset($_POST['save']) && $_POST['save'] == 'upload') {
                 //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;
                 # Save Data
@@ -66,6 +76,15 @@
                             $orig_fname = $_POST['orig_fname'];
                             $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
                             $uploaded_img = $ybook_dir.'/'.$orig_fname;
+                            copy($file, $uploaded_img);
+                        } elseif ($_GET['type'] == 'image-multi-optional') {                            
+                            $orig_fname = $_FILES['uploaded_file']['name'];
+                            //print "<pre>"; print_r($_POST); print_r($_FILES); exit;
+                            $new_fname = $_GET['img_type'].'_page_'.time();
+                            $ext = preg_replace("/([^\.]+)\.(.+)$/", '.$2', $orig_fname);
+                            $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
+                            $uploaded_img = $ybook_dir.'/'.$new_fname.$ext;
+                            //print "<pre>$file - $uploaded_img\n"; exit;
                             copy($file, $uploaded_img);
                         } else {
                             $list = getCSVFileData($file, "\t");
@@ -126,15 +145,19 @@
         }
     }
    
+    $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
     $_POST['ybook_layout'] = $sql->getYearbookSettings($yearbook_key);
     //print "<pre>"; print_r($_POST); exit;
     $_POST['sections'] = $sql->getYearBookSections();
-    foreach ($_POST['sections'] as $type => $uploaded) {
+    $_POST['image-multi-optional'] = array();
+    foreach ($_POST['sections'] as $type => $section_type) {
         $_POST[$type]['title'] = $sql->getDataTitle($type);
         $_POST[$type]['rows'] = $sql->getDataPageRows($type);
-        if ($uploaded) {
+        if ($section_type == 'uploaded') {
             $_POST[$type]['headers'] = $sql->getDataHeaders($type);
             $_POST[$type]['data'] = $sql->getUploadedData($type, $yearbook_key);
+        } elseif ($section_type == 'image-multi-optional') {
+            $_POST['image-multi-optional'][$type] = getImagesFromDir($ybook_dir, $type.'_page_');
         }
     }
     $_POST['data_list'] = $_POST['sections'];
@@ -145,10 +168,9 @@
             $_POST[$type]['title'] = $sql->getDataTitle($type);
         }
     }
-    //print "<pre>"; print_r($_POST); exit;
+    //print "<pre>"; print_r($_POST['image-multi-optional']); exit;
 
     //print "<pre>"; print_r($_SESSION['ybook']); exit;
-    $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
     $ybook_theme = $sql->getYearbookTheme($_GET['batch']);
     $_POST['theme_sel'] = $_SESSION['ybook']['themes'][$ybook_theme];
     $_POST['ybook'] = array(

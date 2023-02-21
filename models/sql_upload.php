@@ -8,6 +8,7 @@ class SQL_Upload extends DB_Connect {
         'ybook_cover' => 'Cover Page',
         'content_bg_page' => 'Content Page',
         'vision_mission' => 'Vision | Mission | Goals',
+        'message' => 'Message Page',
         'officials' => 'BISU System Officials',
         'board' => 'Board of Regents',
         'faculty' => 'Teaching Staff',
@@ -29,6 +30,7 @@ class SQL_Upload extends DB_Connect {
         'bisu_hymn' => 'BISU Hymn',
         'grad_song' => 'Graduation Song',
         'tribute_song' => 'Tribute Song',
+        'school_events' => 'School Events Page',
         'officers' => 'Batch Officers',
         'ybook_back' => 'Back Page',
         # online-only
@@ -42,12 +44,16 @@ class SQL_Upload extends DB_Connect {
 
     public function getYearBookSections()
     {
+        /*
         return array(
-            'graduates' => 'uploaded',
+            'ybook_cover' => 'image',
+            'school_events' => 'image-multi-optional',
         );
+        */
         return array(
             'ybook_cover' => 'image',
             'vision_mission' => 'static',
+            'message' => 'image-multi-optional',
             'officials' => 'uploaded',
             'board' => 'uploaded',
             'faculty' => 'uploaded',
@@ -58,6 +64,7 @@ class SQL_Upload extends DB_Connect {
             'bisu_hymn' => 'static',
             'grad_song' => 'uploaded',
             'tribute_song' => 'uploaded',
+            'school_events' => 'image-multi-optional',
             'officers' => 'uploaded',
             'ybook_back' => 'image',
         );
@@ -683,7 +690,7 @@ class SQL_Upload extends DB_Connect {
         } else {
             $res = $this->db->error;
         }
-        var_dump($res);
+        //var_dump($res);
 
         return $res;
 

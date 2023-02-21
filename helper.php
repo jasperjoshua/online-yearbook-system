@@ -63,7 +63,7 @@ function getFoldersFromDir($path)
     return $folders;
 }
 
-function getImagesFromDir($path) 
+function getImagesFromDir($path, $name_filter='') 
 {
     $files = scandir($path);
     $images = array();
@@ -73,10 +73,17 @@ function getImagesFromDir($path)
             $type = mime_content_type($fpath);
             if (preg_match('/^image/', $type)) {
                 $base_fn = preg_replace('/\..+$/', '', $file);
-                $images[$base_fn] = dirname($fpath).'/'.$file;
+                if ($name_filter != '') {
+                    if (preg_match("/{$name_filter}/", $base_fn)) {
+                        $images[$base_fn] = dirname($fpath).'/'.$file;
+                    }
+                } else {
+                    $images[$base_fn] = dirname($fpath).'/'.$file;
+                }
             }
         }
     }
+    //print "<pre>$path - $name_filter\n"; print_r($files); print_r($images); exit;
 
     return $images;
 }

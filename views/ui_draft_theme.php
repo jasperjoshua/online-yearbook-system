@@ -186,6 +186,9 @@
                                     </div>
                                 </form>
 
+                            <?php elseif ($page_type == 'image-multi-optional'): ?>
+                                <?php require_once 'views/tpl_draft_image_multi_optional.php' ?>
+
                             <?php endif; ?>
 
                             <?php
