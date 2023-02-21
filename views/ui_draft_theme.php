@@ -53,8 +53,9 @@
         </div>
         <div class="container py-5">
             <hr class="hr-blurry" />
-            <div class="container">
-                <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+            <div class="row">
+                
+                <ul class="nav nav-pills nav-fill flex-column col-3" style="position: static;" id="myTab" role="tablist">
                     <?php foreach ($_POST['sections'] as $type => $page_type): ?>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link 
@@ -94,10 +95,8 @@
                         </div>
                     </li>
                 </ul>
-            </div>
-            <hr class="hr-blurry" />
-            <div class="container mt-5">
-                <div class="tab-content" id="myTabContent">              
+               
+                <div class="tab-content col-9" id="myTabContent">              
                     <?php foreach ($_POST['data_list'] as $type => $page_type): ?>
                         <div class="tab-pane fade
                             <?php if ($_POST['active'] == $type): ?>
@@ -121,12 +120,12 @@
                             
                             <p class="h4 text-primary ff-secondary fw-normal text-center mb-2"><?php echo $_POST[$type]['title'] ?></p> 
                             <?php if ($page_type == 'uploaded'): ?>
-                                <div class="row g-2">
+                                <div class="row">
                                     <form method="POST" enctype="multipart/form-data" 
                                         action="draft.php?m=upload&type=<?php echo $_GET['type'] ?>&batch=<?php echo $_GET['batch'] ?>" >
                                         
                                         <?php if ($_GET['type'] == 'grad_song' || $_GET['type'] == 'tribute_song'): ?>
-                                            <div class="row g-3">
+                                            <div class="row">
                                                 <p class="text-secondary text-uppercase mb-2">Select TXT file (.txt) to upload <?php echo $_POST['title'] ?> list</p>
                                                 <div class="col-md-9">
                                                     <input type="file" name="uploaded_file" accept="text/txt" class="form-control form-control-lg" id="uploaded_file" />
@@ -143,7 +142,7 @@
                                                 </p>
                                             </div>
                                         <?php else: ?>
-                                            <div class="row g-3">
+                                            <div class="row">
                                                 <p class="text-secondary text-uppercase mb-2">Select TSV (Tab Separated Values) file (.tsv) to upload <?php echo $_POST['title'] ?> list</p>
                                                 <div class="col-md-9">
                                                     <input type="file" name="uploaded_file" accept="text/tsv" class="form-control form-control-lg" id="uploaded_file" />
@@ -166,11 +165,11 @@
 
                             <?php elseif ($page_type == 'image'): ?>
                                 <form action="draft.php?m=upload&type=image&batch=<?php echo $_GET['batch'] ?>&img_type=<?php echo $type ?>" method="POST" enctype="multipart/form-data" class="p-3">
-                                    <div class="row m-1">
-                                        <div class="col-sm-5">
+                                    <div class="row">
+                                        <div class="col-sm-6">
                                             <img class="img-fluid ybook-page" src="<?php echo $_POST['theme_sel']['images'][$type]?>" width="100%" alt="">
                                         </div>
-                                        <div class="col-sm-7">
+                                        <div class="col-sm-6">
                                             <input type="file" name="uploaded_file" accept="image/*" class="form-control form-control-lg" id="uploaded_file" />
                                             <p class="text-muted mt-0">
                                                 <small>
