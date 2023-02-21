@@ -10,8 +10,8 @@
         <div class="col-sm-12">
             <div class="row mt-4 mb-4">
                 <?php if (isset($_POST['data']['song_title']) && isset($_POST['data']['singer'])): ?>
-                    <p class="h6 text-primary m-0"><?php echo $_POST['data']['song_title'] ?></p>
-                    <p class="small text-dark m-0"><?php echo $_POST['data']['singer'] ?></p>
+                    <p class="h6 text-primary m-0"><strong><?php echo $_POST['data']['song_title'] ?></strong></p>
+                    <p class="small text-dark m-0"><strong><?php echo $_POST['data']['singer'] ?></strong></p>
                 <?php endif; ?>
             </div>
         </div>

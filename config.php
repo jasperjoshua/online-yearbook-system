@@ -1,5 +1,7 @@
 <?php
 
+    error_reporting(E_ERROR);
+
     define("PAGE_TITLE", "BISU-YBOOK");
     define("SYSTEM_NAME", "BISU-BC Yearbook System");
     define("YBOOK_IMG_DIR", "./ybook-img");
