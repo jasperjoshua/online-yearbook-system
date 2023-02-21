@@ -14,6 +14,7 @@ class SQL_Upload extends DB_Connect {
         'faculty' => 'Teaching Staff',
         'non_teaching' => 'Non-Teaching Staff',
         'congrats' => 'Congratulations',
+        'special_graduate' => 'Special Page',
         'graduates' => 'The Graduates',
         'BSIT_cover' => 'BSIT Cover Page',
         'BSIT_filler_page' => 'BSIT Filler Page',
@@ -44,12 +45,6 @@ class SQL_Upload extends DB_Connect {
 
     public function getYearBookSections()
     {
-        /*
-        return array(
-            'ybook_cover' => 'image',
-            'awardees' => 'uploaded',
-        );
-        */
         return array(
             'ybook_cover' => 'image',
             'vision_mission' => 'static',
@@ -59,6 +54,7 @@ class SQL_Upload extends DB_Connect {
             'faculty' => 'uploaded',
             'non_teaching' => 'uploaded',
             'congrats' => 'image',
+            'special_graduate' => 'image-multi-optional',
             'awardees' => 'uploaded',
             'graduates' => 'uploaded',
             'bisu_hymn' => 'static',
@@ -109,6 +105,7 @@ class SQL_Upload extends DB_Connect {
             'officers' => 8,
             'grad_song' => 18,
             'tribute_song' => 18,
+            'awardees' => 6,
         );
         $rows = 5;
         if (isset($list[$type])) {
@@ -146,8 +143,7 @@ class SQL_Upload extends DB_Connect {
         $columns = array();
         if ($type == 'awardees') {
             $columns = array(
-                'First_Name',
-                'Last_Name',
+                'Full_Name',
                 'Award',
                 'Award_Type'
             );
@@ -188,7 +184,7 @@ class SQL_Upload extends DB_Connect {
         if ($type == 'awardees') {
             $columns = array(
                 'Yearbook_Key',
-                'Graduate_Key',
+                'Full_Name',
                 'Award',
                 'Award_Type'
             );
@@ -260,10 +256,9 @@ class SQL_Upload extends DB_Connect {
             }
             $data[] = $row;
         }
-        //print "<pre>";
-        //print_r($data);
+        //print "<pre>"; print_r($data);
         $res = $this->insertTableRow($table, $tbl_columns, $data);
-        //var_dump($res);
+        //var_dump($res); exit;
 
         return $res;
     }
@@ -277,6 +272,7 @@ class SQL_Upload extends DB_Connect {
             WHERE Yearbook_Key = $yearbook_key
             ORDER BY $primary_key
         ";
+        //print "<pre>$sql\n"; 
         $list = $this->getDataFromTable($sql);
 
         return $list;
@@ -303,6 +299,8 @@ class SQL_Upload extends DB_Connect {
             $data = $this->getTributeSong($yearbook_key);
         } elseif ($type == 'courses') {
             $data = $this->getCourses();
+        } elseif ($type == 'awardees') {
+            $data = $this->getAwardees($type, $yearbook_key);
         }
 
         return $data;
@@ -649,6 +647,20 @@ class SQL_Upload extends DB_Connect {
         if (!empty($list)) {
             //$data['center'][] = array_shift($list);
             //$data['bottom'][] = array_pop($list);
+            $data['center'] = $list;
+        }
+
+        return $data;
+    }
+
+    public function getAwardees($type, $yearbook_key)
+    {
+        $list = $this->getTableDataList($type, $yearbook_key, 'Awardee_Key');
+        $data = array();
+        $data['center'] = array();
+        $data['bottom'] = array();
+        $data['list'] = array();
+        if (!empty($list)) {
             $data['center'] = $list;
         }
 

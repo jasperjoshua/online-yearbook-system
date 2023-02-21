@@ -94,6 +94,7 @@
                                 if ($_GET['type'] == 'graduates') {
                                     $row['Course_Key'] = $sql->getCourseKey($row['Course_Code']);
                                 }
+                                //print "<pre>"; print_r($row); exit;
                                 $created = $sql->addTableData($_GET['type'], array($row));
                             }
                         }

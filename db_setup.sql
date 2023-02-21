@@ -110,11 +110,12 @@ CREATE TABLE non_teaching_staff (
 --
 CREATE TABLE awardees_achievers (
   Awardee_Key int(10) unsigned NOT NULL auto_increment,
-  Graduate_Key int(10) NOT NULL,
-  Award varchar(100) NOT NULL,
-  Award_Type varchar(10) NOT NULL,
+  Yearbook_Key int(10) NOT NULL,
+  Full_Name varchar(255) NOT NULL,
+  Award varchar(255) NOT NULL,
+  Award_Type varchar(255) NOT NULL,
   PRIMARY KEY  (Awardee_Key),
-  UNIQUE KEY tbl_unique (Graduate_Key, Award)
+  UNIQUE KEY tbl_unique (Yearbook_Key, Award, Full_Name)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
