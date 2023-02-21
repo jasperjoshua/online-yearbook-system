@@ -47,7 +47,7 @@ class SQL_Upload extends DB_Connect {
         /*
         return array(
             'ybook_cover' => 'image',
-            'school_events' => 'image-multi-optional',
+            'awardees' => 'uploaded',
         );
         */
         return array(
@@ -59,7 +59,7 @@ class SQL_Upload extends DB_Connect {
             'faculty' => 'uploaded',
             'non_teaching' => 'uploaded',
             'congrats' => 'image',
-            //'awardees' => 'uploaded',
+            'awardees' => 'uploaded',
             'graduates' => 'uploaded',
             'bisu_hymn' => 'static',
             'grad_song' => 'uploaded',

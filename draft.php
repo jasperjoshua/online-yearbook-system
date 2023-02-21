@@ -37,6 +37,7 @@
     }
 
     $yearbook_key = $sql->getYearbookKey($_GET['batch']); 
+    $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
     $_SESSION['ybook']['batch_sel'] = $_GET['batch'];
     //print "<pre>"; print_r($_FILES); print_r($_POST); print_r($_GET); exit;
     
@@ -103,19 +104,30 @@
             } 
         } elseif ($_GET['m'] == 'publish') {
             //print "<pre>"; print_r($_POST); print_r($_SESSION['ybook']); exit;
-            # Update yearbook theme
-            $updated = $sql->publishYearbook($_GET['batch']);
-            if ($updated) {
-                $_POST['success'] = 'The yearbook has been published.';
-                # Redirect to create page when no batch entered
-                header('Location: ./index.php');
-                die();
+            $grad_dir = $ybook_dir.'/graduates';
+            $grad_data = array();
+            if (is_dir($grad_dir)) {
+                $grad_data = getFoldersFromDir($grad_dir);
+                $_POST['danger'] = 'Please add graduates profile images in '.$grad_dir.' folder first.';
             } else {
-                $_POST['danger'] = 'Something went wrong.';
+                $_POST['danger'] = 'Graduates folder in '.$ybook_dir.' does not exist.';
+            }
+
+            if (!empty($grad_data)) {
+                # Update yearbook theme
+                $updated = $sql->publishYearbook($_GET['batch']);            
+                if ($updated) {
+                    $_POST['success'] = 'The yearbook has been published.';
+                    # Redirect to create page when no batch entered
+                    header('Location: ./index.php');
+                    die();
+                } else {
+                    $_POST['danger'] = 'Something went wrong.';
+                }
             }
         } elseif ($_GET['m'] == 'layout') {
             # Update yearbook layouot
-            $updated = $sql->updateYearbookLayout($_GET['batch'], $_POST);
+            $updated = $sql->updateYearbookLayout($_GET['batch'], $_POST);            
             if ($updated) {
                 $_POST['success'] = 'The yearbook layout has been updated.';
             } else {
@@ -145,7 +157,6 @@
         }
     }
    
-    $ybook_dir = YBOOK_IMG_DIR.'/'.$_GET['batch'];
     $_POST['ybook_layout'] = $sql->getYearbookSettings($yearbook_key);
     //print "<pre>"; print_r($_POST); exit;
     $_POST['sections'] = $sql->getYearBookSections();
