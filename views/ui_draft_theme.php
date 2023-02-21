@@ -55,7 +55,7 @@
             <hr class="hr-blurry" />
             <div class="row">
                 
-                <ul class="nav nav-pills nav-fill flex-column col-3" style="position: static;" id="myTab" role="tablist">
+                <ul class="nav nav-pills nav-fill flex-column col-2" style="display: inline-block;" id="myTab" role="tablist">
                     <?php foreach ($_POST['sections'] as $type => $page_type): ?>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link 
@@ -96,7 +96,7 @@
                     </li>
                 </ul>
                
-                <div class="tab-content col-9" id="myTabContent">              
+                <div class="tab-content col-10" id="myTabContent">              
                     <?php foreach ($_POST['data_list'] as $type => $page_type): ?>
                         <div class="tab-pane fade
                             <?php if ($_POST['active'] == $type): ?>
