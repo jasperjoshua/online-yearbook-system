@@ -19,7 +19,7 @@
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                     <i class="bi bi-printer"></i>
-                                    Printer-friendly
+                                  Download
                                 </a>
                                 <div class="dropdown-menu m-0">
                                     <?php foreach ($_POST['ybook_list'] as $batch => $ybook_data): ?>
@@ -30,7 +30,7 @@
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                     <i class="bi bi-book"></i>
-                                    Flip View
+                                    View
                                 </a>
                                 <div class="dropdown-menu m-0">
                                     <?php foreach ($_POST['ybook_list'] as $batch => $ybook_data): ?>

@@ -21,10 +21,10 @@
 <?php foreach (array_values($_POST['image-multi-optional'][$type]) as $i => $img_path): ?>
     <form action="draft.php?m=delete&batch=<?php echo $_GET['batch'] ?>&img_type=<?php echo $type ?>" method="POST" enctype="multipart/form-data" class="p-3">
         <div class="row m-1">
-            <div class="col-sm-5">
+            <div class="col-sm-8">
                 <img class="img-fluid ybook-page" src="<?php echo $img_path ?>" width="100%" alt="">
             </div>
-            <div class="col-sm-7">
+            <div class="col-sm-4" style="position: relative; left: -10%;">
                 <input type="hidden" name="image_path" value="<?php echo $img_path ?>" />
                 <button class="btn btn-primary mt-2 p-3" type="submit">Delete Image</button>
             </div>

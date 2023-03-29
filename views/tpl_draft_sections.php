@@ -2,19 +2,7 @@
 
                 
                 <ul class="nav nav-pills nav-fill flex-column col-2 ml-4" style="display: inline-block; text-align: justify;" id="myTab" role="tablist">
-                    <?php foreach ($_POST['sections'] as $type => $page_type): ?>
-                    <li class="nav-item text-center" role="presentation" style="disaply: block;">
-                        <button class="nav-link 
-                            <?php if ($_POST['active'] == $type): ?>
-                                active
-                            <?php endif; ?>
-                            " data-bs-toggle="tab" type="button" role="tab" aria-selected="false" 
-                            id="<?php echo $type ?>" data-bs-target="#<?php echo $type ?>-pane" aria-controls="<?php echo $type ?>-pane" >
-                            <?php echo $_POST[$type]['title'] ?>                                               
-                        </button>
-                    </li>
-                    <?php endforeach; ?>
-                    <li class="nav-item dropdown " style="disaply: block;">
+                <li class="nav-item dropdown " style="disaply: block;">
                         <a class="nav-link 
                             <?php if ($_POST['active'] == 'image'): ?>
                                 active
@@ -40,4 +28,17 @@
                             <?php endforeach; ?>
                         </div>
                     </li>
+                    <?php foreach ($_POST['sections'] as $type => $page_type): ?>
+                    <li class="nav-item text-center" role="presentation" style="disaply: block;">
+                        <button class="nav-link 
+                            <?php if ($_POST['active'] == $type): ?>
+                                active
+                            <?php endif; ?>
+                            " data-bs-toggle="tab" type="button" role="tab" aria-selected="false" 
+                            id="<?php echo $type ?>" data-bs-target="#<?php echo $type ?>-pane" aria-controls="<?php echo $type ?>-pane" >
+                            <?php echo $_POST[$type]['title'] ?>                                               
+                        </button>
+                    </li>
+                    <?php endforeach; ?>
+                    
                 </ul>
