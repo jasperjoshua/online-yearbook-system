@@ -24,7 +24,7 @@
             <div class="col-sm-8">
                 <img class="img-fluid ybook-page" src="<?php echo $img_path ?>" width="100%" alt="">
             </div>
-            <div class="col-sm-4" style="position: relative; left: -10%;">
+            <div class="col-sm-4" style="position: relative; left: -~10%;">
                 <input type="hidden" name="image_path" value="<?php echo $img_path ?>" />
                 <button class="btn btn-primary mt-2 p-3" type="submit">Delete Image</button>
             </div>
